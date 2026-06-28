@@ -9,7 +9,7 @@
 
 ## Phases
 
-- [ ] **Phase 1: Foundation** - WXT build pipeline, MV3 event hook, storage schema, privacy policy
+- [x] **Phase 1: Foundation** - WXT build pipeline, MV3 event hook, storage schema, privacy policy (Complete 2026-06-28)
 - [ ] **Phase 2: Rename Engine** - Claude integration, pattern learning, local cache matching
 - [ ] **Phase 3: Settings UI** - Popup, options page, rule viewer, inline editing, custom rules, conflict resolution
 - [ ] **Phase 4: Freemium + Store Submission** - Usage gating, upgrade prompt, store assets
@@ -31,9 +31,9 @@
   5. Privacy policy draft exists and correctly states only filenames (never file contents) are sent to Claude
 **Plans:** 3 plans
 Plans:
-- [ ] 01-01-PLAN.md — WXT scaffold, manifest permissions, storage schema, Vitest config (Wave 1)
-- [ ] 01-02-PLAN.md — onDeterminingFilename hook implementation + unit tests + manual Chrome load (Wave 2)
-- [ ] 01-03-PLAN.md — Privacy policy draft (PRIVACY.md) (Wave 2, parallel)
+- [x] 01-01-PLAN.md — WXT scaffold, manifest permissions, storage schema, Vitest config (Wave 1)
+- [x] 01-02-PLAN.md — onDeterminingFilename hook implementation + unit tests + manual Chrome load (Wave 2)
+- [x] 01-03-PLAN.md — Privacy policy draft (PRIVACY.md) (Wave 2, parallel)
 **UI hint:** yes
 
 ---
