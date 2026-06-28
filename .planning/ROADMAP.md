@@ -3,7 +3,7 @@
 **Milestone:** v1 — Chrome Web Store Launch
 **Granularity:** Standard (4 phases)
 **Mode:** MVP — each phase delivers a working vertical slice
-**Coverage:** 19/19 v1 requirements mapped
+**Coverage:** 27/27 v1 requirements mapped
 
 ---
 
@@ -11,7 +11,7 @@
 
 - [ ] **Phase 1: Foundation** - WXT build pipeline, MV3 event hook, storage schema, privacy policy
 - [ ] **Phase 2: Rename Engine** - Claude integration, pattern learning, local cache matching
-- [ ] **Phase 3: Settings UI** - Popup, options page, rule viewer, API key management
+- [ ] **Phase 3: Settings UI** - Popup, options page, rule viewer, inline editing, custom rules, conflict resolution
 - [ ] **Phase 4: Freemium + Store Submission** - Usage gating, upgrade prompt, store assets
 
 ---
@@ -49,15 +49,16 @@
 ---
 
 ### Phase 3: Settings UI
-**Goal:** Users can configure the extension, view learned rules, and manage their API key through a complete popup and options page.
+**Goal:** Users can view and manage rules, create custom rules, resolve conflicts, and see their account status — all through a complete popup and options page.
 **Mode:** mvp
 **Depends on:** Phase 2
-**Requirements:** PATT-04, PATT-05, SET-01, SET-02, SET-03, SET-04, SET-05, QUAL-01
+**Requirements:** PATT-04, PATT-05, PATT-06, PATT-07, PATT-08, SET-01, SET-02, SET-03, SET-04, SET-05, NOTIF-02
 **Success Criteria** (what must be TRUE):
-  1. Popup shows rename count for current month and an enable/disable toggle that takes effect immediately
-  2. Options page accepts an API key, masks it after save, and shows a security note
-  3. Options page lists all learned rules with pattern and example output; user can delete individual rules
-  4. Options page shows rule count, files renamed this month, and estimated API cost
+  1. Popup shows rename count for current month, an enable/disable toggle, and a FREE/PREMIUM badge
+  2. Options page lists all learned rules with pattern, example output, edit (pencil), and delete controls
+  3. User can edit a rule's rename format inline; saving applies forward only; prior renames unchanged
+  4. User can create a custom rule without downloading a file; custom rule wins when it matches
+  5. When a custom rule and learned rule both match a download, a conflict modal appears; user picks one; same pattern never prompts again
 **Plans:** TBD
 **UI hint:** yes
 
@@ -67,7 +68,7 @@
 **Goal:** Freemium gate is enforced and survives service worker restarts; extension is submitted to Chrome Web Store with all required assets.
 **Mode:** mvp
 **Depends on:** Phase 3
-**Requirements:** MON-01, MON-02, MON-03, MON-04, QUAL-03
+**Requirements:** MON-01, MON-02, MON-03, MON-04, NOTIF-01, QUAL-03
 **Success Criteria** (what must be TRUE):
   1. Free tier user who has renamed 5 files sees an upgrade prompt on the 6th download instead of a rename
   2. Monthly counter resets on the first day of the new calendar month and persists through browser restarts
@@ -89,4 +90,4 @@
 ---
 
 *Roadmap created: 2026-06-28*
-*Last updated: 2026-06-28 after initial creation*
+*Last updated: 2026-06-28 after FINAL scope ingest — Phase 3 expanded with rule editing, custom rules, conflict resolution (PATT-06/07/08, NOTIF-02); NOTIF-01 added to Phase 4; coverage 19→27*

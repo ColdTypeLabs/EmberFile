@@ -45,9 +45,17 @@ These are locked decisions from research — do not deviate without explicit dis
 |-------|------|-----------------|
 | 1 – Foundation | Loadable extension, MV3 rename hook proven, storage schema | CORE-01/02/05, PATT-01/02, QUAL-02/04 |
 | 2 – Rename Engine | Claude on first encounter, local cache on repeat | CORE-03/04, PATT-03 |
-| 3 – Settings UI | Popup + options: toggle, API key, rule viewer, stats | PATT-04/05, SET-01–05, QUAL-01 |
-| 4 – Freemium + Store | Usage gate, monthly reset, Web Store submission | MON-01–04, QUAL-03 |
+| 3 – Settings UI | Popup + options: toggle, rule viewer, inline edit, custom rules, conflict resolution | PATT-04–08, SET-01–05, NOTIF-02 |
+| 4 – Freemium + Store | Usage gate, limit toast, monthly reset, Web Store submission | MON-01–04, NOTIF-01, QUAL-03 |
 
 ## Privacy Policy (Required for Web Store)
 
-The extension sends only filenames (never file contents) to the Anthropic API. No data is stored server-side. API keys are stored locally in chrome.storage.local. Draft must exist before Phase 4 submission.
+The extension sends only filenames (never file contents) to the hosted Claude endpoint. Server logs record only the anonymized pattern (e.g., "invoice + .pdf"), tag, rename format, and timestamp — never actual filenames or user identifiers. Draft must exist before Phase 4 submission.
+
+## Hosted API Key Model
+
+Trevor hosts the Claude API key. Users never input or see it. This means:
+- No API key field in the settings UI (SET-03 is account tier badge, not key input)
+- No chrome.storage.local key storage
+- Trevor absorbs API cost (~$0.01/mo per active user)
+- Freemium enforcement is the only cost-control mechanism

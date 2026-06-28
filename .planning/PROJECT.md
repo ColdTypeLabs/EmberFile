@@ -21,9 +21,11 @@ New downloads get smart, consistent names automatically — the first time via C
 - [ ] Learned rules are stored locally in IndexedDB (filename pattern + extension → tag + naming scheme)
 - [ ] Known patterns are renamed instantly with zero API calls
 - [ ] Files are renamed in real-time in the user's Downloads folder
-- [ ] Settings panel: API key input, enable/disable toggle, stats, rule viewer
+- [ ] Settings panel: account tier badge, enable/disable toggle, stats, rule viewer with edit/delete
+- [ ] Rule management: inline editing (forward-only), custom rule creation, conflict resolution (ask user, remember choice)
 - [ ] Free tier: 5 files/month renamed; Premium ($2.99/mo): unlimited + no ads
 - [ ] Error handling: API failures, permission denied, graceful degradation
+- [ ] Notifications: toast on limit hit, modal on rule conflict
 
 ### Out of Scope
 
@@ -38,8 +40,9 @@ New downloads get smart, consistent names automatically — the first time via C
 
 - **Platform:** Chrome Web Store (Manifest V3). Firefox deferred post-launch.
 - **Business model:** Freemium. Free = 5 files/month + ads. Premium = $2.99/mo unlimited.
+- **API key model:** Trevor hosts the Claude API key. Users never input or see it — zero setup friction on install. API cost absorbed by Trevor (~$0.01/mo per active user).
 - **API cost structure:** ~$0.0003/file (40 tokens @ Haiku rates). ~$0.015 first month, ~$0.01/mo ongoing after patterns stabilize. This is the competitive advantage — patterns learned once, applied forever.
-- **Tech stack per spec:** React + TailwindCSS (popup/settings UI), Manifest V3, IndexedDB (pattern storage), Chrome `downloads` API, background service worker.
+- **Tech stack per spec:** React + TailwindCSS (popup/settings UI), Manifest V3, WXT framework, chrome.storage.local (pattern storage), Chrome `downloads` API, background service worker.
 - **Timeline:** 3-week ship target. Week 1: foundation. Week 2: core logic. Week 3: polish + store submission.
 - **Target user:** Anyone with a chaotic Downloads folder who repeatedly downloads similar files (invoices, screenshots, reports).
 
@@ -57,10 +60,14 @@ New downloads get smart, consistent names automatically — the first time via C
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
 | Claude Haiku for tagging | ~40 tokens/call = negligible cost; fast enough for background rename | — Pending |
-| Local pattern storage (IndexedDB) | Zero recurring API cost after first encounter; works offline | — Pending |
+| Local pattern storage (chrome.storage.local) | Zero recurring API cost after first encounter; works offline; accessible from all extension contexts | — Pending |
+| Trevor hosts the API key | Zero setup friction — users install and it works; cost absorbed by Trevor at ~$0.01/mo/user | ✓ Locked |
 | Freemium at $2.99/mo | Low enough to impulse-buy; free tier (5 files) hits limit fast, makes upgrade obvious | — Pending |
 | Free tier = 5 files/month | Aggressive enough to show value, tight enough to drive upgrade | — Pending |
 | Downloads folder only | Scope control; Chrome `downloads` API makes this easy and trustworthy | — Pending |
+| Toasts for limit + conflict only | Per-rename success toasts are UX noise; only surface UI when user action is needed | ✓ Locked |
+| Rule edits are forward-only | Users own their filesystem; extension never retroactively renames | ✓ Locked |
+| Custom rules win over learned rules | Explicit user preference always beats AI suggestion | ✓ Locked |
 
 ## Evolution
 
