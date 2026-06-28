@@ -587,16 +587,16 @@ The developer holds the API key. Users never provide or see it.
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Does `async` function returning `Promise<void>` satisfy Chrome's `return true` requirement?**
    - What we know: Chrome docs say "return `true` from the listener". `async` functions return a `Promise`, which is truthy.
    - What's unclear: Whether Chrome checks `=== true` or truthiness.
-   - Recommendation: Test explicitly on first manual load. If downloads hang, switch to a non-async outer function with explicit `return true`.
+   - RESOLVED: Plan 01-02 checkpoint task catches this explicitly — if downloads hang, switch to a non-async outer function with explicit `return true`.
 
 2. **WXT version to pin vs. float?**
    - What we know: 0.20.27 is current. WXT is pre-1.0 — breaking changes may occur.
-   - Recommendation: Pin to `0.20.27` in package.json (`"wxt": "0.20.27"`) and upgrade deliberately.
+   - RESOLVED: Pin to `0.20.27` in package.json (`"wxt": "0.20.27"`) and upgrade deliberately.
 
 ---
 

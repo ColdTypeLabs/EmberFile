@@ -29,7 +29,11 @@
   3. On any simulated failure, `suggest()` is called with the original filename and the download never hangs
   4. Enable/disable flag and storage schema are readable across simulated service worker restarts
   5. Privacy policy draft exists and correctly states only filenames (never file contents) are sent to Claude
-**Plans:** TBD
+**Plans:** 3 plans
+Plans:
+- [ ] 01-01-PLAN.md — WXT scaffold, manifest permissions, storage schema, Vitest config (Wave 1)
+- [ ] 01-02-PLAN.md — onDeterminingFilename hook implementation + unit tests + manual Chrome load (Wave 2)
+- [ ] 01-03-PLAN.md — Privacy policy draft (PRIVACY.md) (Wave 2, parallel)
 **UI hint:** yes
 
 ---
@@ -82,7 +86,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/? | Not started | - |
+| 1. Foundation | 0/3 | Not started | - |
 | 2. Rename Engine | 0/? | Not started | - |
 | 3. Settings UI | 0/? | Not started | - |
 | 4. Freemium + Store Submission | 0/? | Not started | - |
@@ -91,3 +95,4 @@
 
 *Roadmap created: 2026-06-28*
 *Last updated: 2026-06-28 after FINAL scope ingest — Phase 3 expanded with rule editing, custom rules, conflict resolution (PATT-06/07/08, NOTIF-02); NOTIF-01 added to Phase 4; coverage 19→27*
+*Phase 1 plans finalized: 2026-06-28 — 3 plans, 2 waves*
