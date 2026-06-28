@@ -1,0 +1,26 @@
+{
+  "name": "download-renamer-web-extension",
+  "description": "Auto-renames downloads using AI. First encounter uses Claude; every repeat uses a local rule.",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wxt",
+    "build": "wxt build",
+    "zip": "wxt zip",
+    "postinstall": "wxt prepare",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@wxt-dev/module-react": "^1.0.4",
+    "@wxt-dev/storage": "^1.0.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "wxt": "^0.20.27"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.5.3",
+    "vitest": "^3.2.4"
+  }
+}

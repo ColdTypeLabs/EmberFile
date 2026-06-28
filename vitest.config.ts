@@ -1,0 +1,23 @@
+import { defineConfig } from 'vitest/config';
+import { WxtVitest } from 'wxt/testing';
+
+export default defineConfig({
+  plugins: [WxtVitest()],
+  test: {
+    mockReset: true,
+    restoreMocks: true,
+  },
+  esbuild: {
+    tsconfigRaw: {
+      compilerOptions: {
+        target: 'ESNext',
+        module: 'ESNext',
+        moduleResolution: 'Bundler',
+        esModuleInterop: true,
+        resolveJsonModule: true,
+        strict: true,
+        skipLibCheck: true,
+      },
+    },
+  },
+});
