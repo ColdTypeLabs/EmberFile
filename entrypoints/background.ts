@@ -51,5 +51,8 @@ export async function handleDeterminingFilename(
 }
 
 export default defineBackground(() => {
-  chrome.downloads.onDeterminingFilename.addListener(handleDeterminingFilename);
+  chrome.downloads.onDeterminingFilename.addListener((downloadItem, suggest) => {
+    handleDeterminingFilename(downloadItem, suggest);
+    return true; // signal Chrome to wait for async suggest() call
+  });
 });
