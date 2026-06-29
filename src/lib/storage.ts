@@ -30,3 +30,7 @@ export const storageConflict = storage.defineItem<{
   customRule: { matchText: string; renameFormat: string };
   learnedRule: { tag: string; renameFormat: string };
 } | null>('local:pendingConflict', { fallback: null });
+
+export const storageLocalLicenseKey = storage.defineItem<string | null>('local:licenseKey', {
+  fallback: null,
+});
