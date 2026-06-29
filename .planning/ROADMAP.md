@@ -67,7 +67,13 @@ Plans:
   3. User can edit a rule's rename format inline; saving applies forward only; prior renames unchanged
   4. User can create a custom rule without downloading a file; custom rule wins when it matches
   5. When a custom rule and learned rule both match a download, a conflict modal appears; user picks one; same pattern never prompts again
-**Plans:** TBD
+**Plans:** 5 plans
+Plans:
+- [ ] 03-01-PLAN.md — Tailwind install, storage extraction to src/lib/storage.ts, conflict detection in background, options scaffold (Wave 1)
+- [ ] 03-02-PLAN.md — Popup UI: PauseResumeButton, RenameCountLabel, AccountBadge, ManageRulesLink (Wave 2, parallel)
+- [ ] 03-03-PLAN.md — Options shell: OptionsHeader, StatsSection, AccountSection (Wave 2, parallel)
+- [ ] 03-04-PLAN.md — Learned Rules section: RuleRow, EditExpandedRow, DeleteConfirmRow, EmptyRuleState (Wave 3)
+- [ ] 03-05-PLAN.md — Custom Rules section + CustomRuleModal + ConflictModal (Wave 4)
 **UI hint:** yes
 
 ---
@@ -92,7 +98,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-06-28 |
 | 2. Rename Engine | 3/3 | Complete | 2026-06-28 |
-| 3. Settings UI | 0/? | Not started | - |
+| 3. Settings UI | 0/5 | In progress | - |
 | 4. Freemium + Store Submission | 0/? | Not started | - |
 
 ---
@@ -101,3 +107,4 @@ Plans:
 *Last updated: 2026-06-28 after FINAL scope ingest — Phase 3 expanded with rule editing, custom rules, conflict resolution (PATT-06/07/08, NOTIF-02); NOTIF-01 added to Phase 4; coverage 19→27*
 *Phase 1 plans finalized: 2026-06-28 — 3 plans, 2 waves*
 *Phase 2 plans finalized: 2026-06-28 — 3 plans, 2 waves*
+*Phase 3 plans finalized: 2026-06-28 — 5 plans, 4 waves*
