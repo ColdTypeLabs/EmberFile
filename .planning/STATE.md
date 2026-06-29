@@ -1,7 +1,7 @@
 # Project State: Download Renamer Web Extension
 
-**Last updated:** 2026-06-28
-**Status:** Phase 3 complete — ready for Phase 4 planning
+**Last updated:** 2026-06-29
+**Status:** Phase 4 in progress — 04-02 at checkpoint:human-action (Task 2)
 
 ---
 
@@ -9,7 +9,7 @@
 
 **Core value:** New downloads get smart, consistent names automatically — Claude once per pattern, local rules forever after.
 
-**Current focus:** Phase 3 complete — Settings UI (popup, options page, rule management, custom rules, conflict resolution)
+**Current focus:** Phase 4 executing — 04-02 paused at human-action checkpoint (Cloudflare KV namespace create + wrangler deploy)
 
 ---
 
@@ -17,8 +17,8 @@
 
 **Milestone:** v1 — Chrome Web Store Launch
 **Current phase:** Phase 4 — Freemium + Store Submission
-**Current plan:** —
-**Status:** Phase 3 complete — ready to plan Phase 4
+**Current plan:** 04-02 (Task 2 checkpoint:human-action — awaiting KV namespace create + deploy)
+**Status:** Phase 4 executing — Wave 1 in progress
 
 ```
 Progress: [x] Phase 1  [x] Phase 2  [x] Phase 3  [ ] Phase 4
@@ -54,6 +54,8 @@ Progress: [x] Phase 1  [x] Phase 2  [x] Phase 3  [ ] Phase 4
 | Storage consolidated to `src/lib/storage.ts` | Single source of truth; background.ts + all UI pages import from here |
 | ConflictModal has no dismiss | User must pick one side — per D-23 in CONTEXT.md |
 | `isPremium` hardcoded false in Phase 3 | Phase 4 adds real freemium gate; Phase 3 UI is structural only |
+| /validate-key route uses url.pathname dispatch | Existing POST / rename route unchanged; validate-key checked first then falls through |
+| LICENSE_KEYS KV placeholder ID in wrangler.toml | Trevor must run kv namespace create and update ID before deploying |
 
 ### Architecture Constraints (must not violate)
 
@@ -87,9 +89,9 @@ Progress: [x] Phase 1  [x] Phase 2  [x] Phase 3  [ ] Phase 4
 
 ## Session Continuity
 
-Next action: `/gsd:plan-phase 4` — Freemium + Store Submission
+Next action: Complete 04-02 Task 2 checkpoint — run Wrangler CLI commands to create KV namespace, deploy Worker, add test keys, verify curl responses.
 
-Phase 3 complete. Manual Chrome load test recommended before Phase 4 — load the extension and verify popup, options page, and rule management flow work end-to-end in the browser.
+After checkpoint: Resume 04-02 continuation (type "deployed") then continue Wave 1 with 04-01 and 04-05.
 
 ---
 
