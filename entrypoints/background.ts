@@ -33,6 +33,25 @@ export async function handleDeterminingFilename(
     if (rules[fingerprint]) {
       // Cache hit — apply locally, no network request
       const rule = rules[fingerprint];
+
+      // D-20/D-21/D-22: Conflict detection — check if any custom rule also matches this filename
+      const customRules = await storageCustomRules.getValue();
+      const matchingCustomRule = Object.values(customRules).find(
+        (cr) => originalName.toLowerCase().includes(cr.matchText.toLowerCase())
+      );
+      if (matchingCustomRule) {
+        // First-conflict-wins (D-22): only write if no pending conflict is already queued
+        const existingConflict = await storageConflict.getValue();
+        if (existingConflict === null) {
+          await storageConflict.setValue({
+            fingerprint,
+            customRule: { matchText: matchingCustomRule.matchText, renameFormat: matchingCustomRule.renameFormat },
+            learnedRule: { tag: rule.tag, renameFormat: rule.renameFormat },
+          });
+        }
+        // D-21: learned rule applied as fallback regardless of conflict state
+      }
+
       rule.matchCount++;
       await storageRules.setValue(rules);
       const newStem = applyTemplate(rule.renameFormat, rule.tag, rule.matchCount);
