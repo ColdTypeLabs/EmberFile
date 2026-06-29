@@ -1,3 +1,5 @@
 node_modules
 .output
 .wxt
+workers/rename-relay/.dev.vars
+.env.local
