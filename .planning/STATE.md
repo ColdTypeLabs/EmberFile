@@ -1,7 +1,7 @@
 # Project State: Download Renamer Web Extension
 
 **Last updated:** 2026-06-29
-**Status:** Phase 4 in progress — 04-02 at checkpoint:human-action (Task 2)
+**Status:** Phase 4 in progress — 04-05 at checkpoint:human-action (Task 4 — GitHub Pages activation)
 
 ---
 
@@ -9,7 +9,7 @@
 
 **Core value:** New downloads get smart, consistent names automatically — Claude once per pattern, local rules forever after.
 
-**Current focus:** Phase 4 executing — 04-02 paused at human-action checkpoint (Cloudflare KV namespace create + wrangler deploy)
+**Current focus:** Phase 4 executing — 04-05 paused at human-action checkpoint (GitHub Pages activation for privacy policy)
 
 ---
 
@@ -17,7 +17,7 @@
 
 **Milestone:** v1 — Chrome Web Store Launch
 **Current phase:** Phase 4 — Freemium + Store Submission
-**Current plan:** 04-02 (Task 2 checkpoint:human-action — awaiting KV namespace create + deploy)
+**Current plan:** 04-05 (Task 4 checkpoint:human-action — awaiting GitHub Pages activation + privacy URL confirmation)
 **Status:** Phase 4 executing — Wave 1 in progress
 
 ```
@@ -34,7 +34,7 @@ Progress: [x] Phase 1  [x] Phase 2  [x] Phase 3  [ ] Phase 4
 | Phases total | 4 |
 | Phases complete | 3 |
 | Requirements mapped | 27/27 |
-| Plans complete | 13 |
+| Plans complete | 14 |
 
 ---
 
@@ -56,6 +56,9 @@ Progress: [x] Phase 1  [x] Phase 2  [x] Phase 3  [ ] Phase 4
 | `isPremium` hardcoded false in Phase 3 | Phase 4 adds real freemium gate; Phase 3 UI is structural only |
 | /validate-key route uses url.pathname dispatch | Existing POST / rename route unchanged; validate-key checked first then falls through |
 | LICENSE_KEYS KV placeholder ID in wrangler.toml | Trevor must run kv namespace create and update ID before deploying |
+| Privacy policy hosted via GitHub Pages /docs folder | No separate hosting infrastructure required |
+| Store listing name 34 chars, short desc 105 chars | Well within Chrome Web Store limits (45/132 chars) |
+| Upgrade URL and privacy URL left as explicit PLACEHOLDERs | Must be replaced before submission — marked clearly in STORE-LISTING.md |
 
 ### Architecture Constraints (must not violate)
 
@@ -89,9 +92,9 @@ Progress: [x] Phase 1  [x] Phase 2  [x] Phase 3  [ ] Phase 4
 
 ## Session Continuity
 
-Next action: Complete 04-02 Task 2 checkpoint — run Wrangler CLI commands to create KV namespace, deploy Worker, add test keys, verify curl responses.
+Next action: Complete 04-05 Task 4 checkpoint — enable GitHub Pages (repo Settings → Pages → main branch → /docs), wait for build, confirm privacy.html is live, update STORE-LISTING.md privacy URL placeholder.
 
-After checkpoint: Resume 04-02 continuation (type "deployed") then continue Wave 1 with 04-01 and 04-05.
+Resume signal: Type "pages-live" and paste the confirmed privacy policy URL.
 
 ---
 
