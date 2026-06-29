@@ -14,6 +14,7 @@ Do not include any text outside the JSON object.`;
 
 export interface Env {
   ANTHROPIC_API_KEY: string;
+  LICENSE_KEYS: KVNamespace;
 }
 
 const CORS_HEADERS = {
@@ -32,6 +33,31 @@ export default {
     // Only POST is supported
     if (request.method !== 'POST') {
       return new Response('Method Not Allowed', { status: 405 });
+    }
+
+    const url = new URL(request.url);
+
+    // License key validation route
+    if (url.pathname === '/validate-key') {
+      try {
+        const body = await request.json<{ key?: string }>();
+        const key = typeof body.key === 'string' ? body.key.trim() : '';
+        if (!key) {
+          return new Response(JSON.stringify({ valid: false }), {
+            status: 400,
+            headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+          });
+        }
+        const value = await env.LICENSE_KEYS.get(key);
+        return new Response(JSON.stringify({ valid: value !== null }), {
+          headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+        });
+      } catch {
+        return new Response(JSON.stringify({ valid: false }), {
+          status: 500,
+          headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+        });
+      }
     }
 
     try {

@@ -1,3 +1,7 @@
 name = "download-renamer-relay"
 main = "index.ts"
 compatibility_date = "2026-06-28"
+
+[[kv_namespaces]]
+binding = "LICENSE_KEYS"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
