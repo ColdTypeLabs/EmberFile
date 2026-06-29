@@ -147,8 +147,12 @@ export default function App() {
 
   async function handleToggle() {
     const next = !state.enabled;
-    await storageEnabled.setValue(next);
-    setState((s) => ({ ...s, enabled: next }));
+    try {
+      await storageEnabled.setValue(next);
+      setState((s) => ({ ...s, enabled: next }));
+    } catch {
+      // Storage error — do not leave promise unhandled; UI keeps current state (WR-01)
+    }
   }
 
   if (!state.loaded) {
