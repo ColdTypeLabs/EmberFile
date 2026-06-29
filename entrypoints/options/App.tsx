@@ -393,8 +393,19 @@ function CustomRuleModal({
   const [saveError, setSaveError] = useState(false);
 
   async function handleSubmit() {
-    if (!matchText.trim() || !renameFormat.trim()) {
+    const trimmedMatch = matchText.trim();
+    const trimmedFormat = renameFormat.trim();
+    if (!trimmedMatch || !trimmedFormat) {
       setValidationError('Both fields are required.');
+      return;
+    }
+    if (trimmedMatch.length > 200 || trimmedFormat.length > 200) {
+      setValidationError('Fields must be 200 characters or fewer.');
+      return;
+    }
+    // Reject prototype-polluting keys (CR-04)
+    if (['__proto__', 'constructor', 'prototype'].includes(trimmedMatch)) {
+      setValidationError('Invalid match text.');
       return;
     }
     setValidationError(null);
@@ -402,9 +413,9 @@ function CustomRuleModal({
     setSubmitting(true);
     try {
       const current = await storageCustomRules.getValue();
-      current[matchText.trim()] = { matchText: matchText.trim(), renameFormat: renameFormat.trim() };
+      current[trimmedMatch] = { matchText: trimmedMatch, renameFormat: trimmedFormat };
       await storageCustomRules.setValue(current);
-      onAdded(matchText.trim(), { matchText: matchText.trim(), renameFormat: renameFormat.trim() });
+      onAdded(trimmedMatch, { matchText: trimmedMatch, renameFormat: trimmedFormat });
       onClose();
     } catch {
       setSaveError(true);
