@@ -1,26 +1,13 @@
-import { storage } from '@wxt-dev/storage';
 import { computeFingerprint } from '../src/lib/fingerprint';
 import { applyTemplate } from '../src/lib/renameEngine';
-
-// --- Storage items (from Plan 01 — do not modify key names) ---
-export const storageEnabled = storage.defineItem<boolean>('local:enabled', {
-  fallback: true,
-});
-
-export const storageMonthlyCount = storage.defineItem<number>('local:monthlyCount', {
-  fallback: 0,
-});
-
-export const storageMonthlyResetDate = storage.defineItem<string>('local:monthlyResetDate', {
-  init: () => {
-    const now = new Date();
-    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
-  },
-});
-
-export const storageRules = storage.defineItem<
-  Record<string, { tag: string; renameFormat: string; matchCount: number }>
->('local:rules', { fallback: {} });
+import {
+  storageEnabled,
+  storageMonthlyCount,
+  storageMonthlyResetDate,
+  storageRules,
+  storageCustomRules,
+  storageConflict,
+} from '../src/lib/storage';
 
 const WORKER_URL = import.meta.env.VITE_WORKER_URL;
 

@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { fakeBrowser } from '@webext-core/fake-browser';
-import { handleDeterminingFilename, storageRules } from '../entrypoints/background';
+import { handleDeterminingFilename } from '../entrypoints/background';
+import { storageRules } from '../src/lib/storage';
 
 beforeEach(async () => {
   fakeBrowser.reset();
