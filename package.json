@@ -18,9 +18,11 @@
     "wxt": "^0.20.27"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260628.1",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "typescript": "^5.5.3",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "wrangler": "^4.105.0"
   }
 }
