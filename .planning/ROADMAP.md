@@ -10,7 +10,7 @@
 ## Phases
 
 - [x] **Phase 1: Foundation** - WXT build pipeline, MV3 event hook, storage schema, privacy policy (Complete 2026-06-28)
-- [ ] **Phase 2: Rename Engine** - Claude integration, pattern learning, local cache matching
+- [x] **Phase 2: Rename Engine** - Claude integration, pattern learning, local cache matching (Complete 2026-06-28)
 - [ ] **Phase 3: Settings UI** - Popup, options page, rule viewer, inline editing, custom rules, conflict resolution
 - [ ] **Phase 4: Freemium + Store Submission** - Usage gating, upgrade prompt, store assets
 
@@ -50,9 +50,9 @@ Plans:
   4. Learned rules survive browser restart and service worker termination
 **Plans:** 3 plans
 Plans:
-- [ ] 02-01-PLAN.md — computeFingerprint + applyTemplate pure functions with TDD unit tests (Wave 1)
-- [ ] 02-02-PLAN.md — Cloudflare Worker relay scaffold, VITE_WORKER_URL env var, host_permissions update (Wave 1, parallel)
-- [ ] 02-03-PLAN.md — Wire rename engine into background.ts: cache lookup + Worker call + rule storage + timeout (Wave 2)
+- [x] 02-01-PLAN.md — computeFingerprint + applyTemplate pure functions with TDD unit tests (Wave 1)
+- [x] 02-02-PLAN.md — Cloudflare Worker relay scaffold, VITE_WORKER_URL env var, host_permissions update (Wave 1, parallel)
+- [x] 02-03-PLAN.md — Wire rename engine into background.ts: cache lookup + Worker call + rule storage + timeout (Wave 2)
 
 ---
 
@@ -91,7 +91,7 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-06-28 |
-| 2. Rename Engine | 0/3 | Planned | - |
+| 2. Rename Engine | 3/3 | Complete | 2026-06-28 |
 | 3. Settings UI | 0/? | Not started | - |
 | 4. Freemium + Store Submission | 0/? | Not started | - |
 

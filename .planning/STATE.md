@@ -1,7 +1,7 @@
 # Project State: Download Renamer Web Extension
 
 **Last updated:** 2026-06-28
-**Status:** Phase 2 planned — ready to execute
+**Status:** Phase 2 complete — ready for Phase 3 planning
 
 ---
 
@@ -16,9 +16,9 @@
 ## Current Position
 
 **Milestone:** v1 — Chrome Web Store Launch
-**Current phase:** Phase 2 — Rename Engine
+**Current phase:** Phase 3 — Settings UI (next)
 **Current plan:** —
-**Status:** Planned — 3 plans in 2 waves
+**Status:** Phase 2 complete
 
 ```
 Progress: [x] Phase 1  [ ] Phase 2  [ ] Phase 3  [ ] Phase 4
@@ -79,7 +79,7 @@ Progress: [x] Phase 1  [ ] Phase 2  [ ] Phase 3  [ ] Phase 4
 
 ## Session Continuity
 
-Next action: `/gsd:execute-phase 2` — run all 3 plans (2 waves)
+Next action: `/gsd:discuss-phase 3` or `/gsd:plan-phase 3` — Settings UI (popup, options, rule viewer)
 
 Phase 1 complete. Manual Chrome load test still pending (see 01-02-SUMMARY.md) — do this before starting Phase 2 to confirm the hook fires visibly.
 
