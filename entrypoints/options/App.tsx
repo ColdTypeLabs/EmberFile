@@ -98,9 +98,12 @@ function RuleRow({
                 setSaving(true);
                 setSaveError(false);
                 try {
-                  const current = await storageRules.getValue();
-                  current[fingerprint] = { ...current[fingerprint], renameFormat: editValue };
-                  await storageRules.setValue(current);
+                  // Fresh read immediately before write (CR-01)
+                  const freshRules = await storageRules.getValue();
+                  if (freshRules[fingerprint]) {
+                    freshRules[fingerprint].renameFormat = editValue;
+                  }
+                  await storageRules.setValue(freshRules);
                   onSaved(fingerprint, editValue);
                   onSetMode(fingerprint, 'default');
                 } catch {
@@ -143,9 +146,10 @@ function RuleRow({
                 setDeleting(true);
                 setDeleteError(false);
                 try {
-                  const current = await storageRules.getValue();
-                  delete current[fingerprint];
-                  await storageRules.setValue(current);
+                  // Fresh read immediately before write (CR-01)
+                  const freshRules = await storageRules.getValue();
+                  delete freshRules[fingerprint];
+                  await storageRules.setValue(freshRules);
                   onDeleted(fingerprint);
                 } catch {
                   setDeleteError(true);
@@ -211,12 +215,12 @@ function ConflictModal({
     setSaving(true);
     setSaveError(false);
     try {
-      const current = await storageRules.getValue();
-      current[conflict.fingerprint] = {
-        ...current[conflict.fingerprint],
-        renameFormat: conflict.customRule.renameFormat,
-      };
-      await storageRules.setValue(current);
+      // Fresh read immediately before write to minimize stale overwrite race (CR-01)
+      const freshRules = await storageRules.getValue();
+      if (freshRules[conflict.fingerprint]) {
+        freshRules[conflict.fingerprint].renameFormat = conflict.customRule.renameFormat;
+      }
+      await storageRules.setValue(freshRules);
       await storageConflict.setValue(null);
       onRulesUpdated(conflict.fingerprint, conflict.customRule.renameFormat);
       onResolved();
@@ -331,9 +335,10 @@ function CustomRuleRow({
                 setDeleting(true);
                 setDeleteError(false);
                 try {
-                  const current = await storageCustomRules.getValue();
-                  delete current[matchText];
-                  await storageCustomRules.setValue(current);
+                  // Fresh read immediately before write (CR-01)
+                  const freshCustomRules = await storageCustomRules.getValue();
+                  delete freshCustomRules[matchText];
+                  await storageCustomRules.setValue(freshCustomRules);
                   onDeleted(matchText);
                 } catch {
                   setDeleteError(true);
