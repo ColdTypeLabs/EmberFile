@@ -5,7 +5,7 @@ export function applyTemplate(
 ): string {
   const date = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
   return renameFormat
-    .replace('{tag}', tag)
-    .replace('{date}', date)
-    .replace('{index}', String(matchCount));
+    .replaceAll('{tag}', tag)
+    .replaceAll('{date}', date)
+    .replaceAll('{index}', String(matchCount));
 }
