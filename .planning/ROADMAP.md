@@ -11,7 +11,7 @@
 
 - [x] **Phase 1: Foundation** - WXT build pipeline, MV3 event hook, storage schema, privacy policy (Complete 2026-06-28)
 - [x] **Phase 2: Rename Engine** - Claude integration, pattern learning, local cache matching (Complete 2026-06-28)
-- [ ] **Phase 3: Settings UI** - Popup, options page, rule viewer, inline editing, custom rules, conflict resolution
+- [x] **Phase 3: Settings UI** - Popup, options page, rule viewer, inline editing, custom rules, conflict resolution (Complete 2026-06-28)
 - [ ] **Phase 4: Freemium + Store Submission** - Usage gating, upgrade prompt, store assets
 
 ---
@@ -69,11 +69,11 @@ Plans:
   5. When a custom rule and learned rule both match a download, a conflict modal appears; user picks one; same pattern never prompts again
 **Plans:** 5 plans
 Plans:
-- [ ] 03-01-PLAN.md — Tailwind install, storage extraction to src/lib/storage.ts, conflict detection in background, options scaffold (Wave 1)
-- [ ] 03-02-PLAN.md — Popup UI: PauseResumeButton, RenameCountLabel, AccountBadge, ManageRulesLink (Wave 2, parallel)
-- [ ] 03-03-PLAN.md — Options shell: OptionsHeader, StatsSection, AccountSection (Wave 2, parallel)
-- [ ] 03-04-PLAN.md — Learned Rules section: RuleRow, EditExpandedRow, DeleteConfirmRow, EmptyRuleState (Wave 3)
-- [ ] 03-05-PLAN.md — Custom Rules section + CustomRuleModal + ConflictModal (Wave 4)
+- [x] 03-01-PLAN.md — Tailwind install, storage extraction to src/lib/storage.ts, conflict detection in background, options scaffold (Wave 1)
+- [x] 03-02-PLAN.md — Popup UI: PauseResumeButton, RenameCountLabel, AccountBadge, ManageRulesLink (Wave 2, parallel)
+- [x] 03-03-PLAN.md — Options shell: OptionsHeader, StatsSection, AccountSection (Wave 2, parallel)
+- [x] 03-04-PLAN.md — Learned Rules section: RuleRow, EditExpandedRow, DeleteConfirmRow, EmptyRuleState (Wave 3)
+- [x] 03-05-PLAN.md — Custom Rules section + CustomRuleModal + ConflictModal (Wave 4)
 **UI hint:** yes
 
 ---
@@ -98,7 +98,7 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-06-28 |
 | 2. Rename Engine | 3/3 | Complete | 2026-06-28 |
-| 3. Settings UI | 0/5 | In progress | - |
+| 3. Settings UI | 5/5 | Complete | 2026-06-28 |
 | 4. Freemium + Store Submission | 0/? | Not started | - |
 
 ---
