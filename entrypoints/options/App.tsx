@@ -490,6 +490,7 @@ export default function App() {
   const [rules, setRules] = useState<RulesMap | null>(null);
   const [monthlyCount, setMonthlyCount] = useState<number | null>(null);
   const [loadError, setLoadError] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const [rowModes, setRowModes] = useState<Record<string, RowMode>>({});
   const [customRules, setCustomRules] = useState<CustomRulesMap | null>(null);
   const [customRowModes, setCustomRowModes] = useState<Record<string, RowMode>>({});
@@ -508,6 +509,7 @@ export default function App() {
         setMonthlyCount(count);
         setCustomRules(customRulesData);
         setPendingConflict(conflictData);
+        setLoaded(true);
       })
       .catch(() => {
         setLoadError(true);
@@ -515,7 +517,7 @@ export default function App() {
   }, []);
 
   const ruleCount = rules !== null ? Object.keys(rules).length : null;
-  const isLoading = rules === null && monthlyCount === null && customRules === null && !loadError;
+  const isLoading = !loaded && !loadError; // single loaded flag is the definitive gate (WR-03)
 
   function handleSetMode(fingerprint: string, mode: RowMode) {
     setRowModes((prev) => ({ ...prev, [fingerprint]: mode }));
