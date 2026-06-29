@@ -16,9 +16,9 @@
 ## Current Position
 
 **Milestone:** v1 — Chrome Web Store Launch
-**Current phase:** Phase 3 — Settings UI (next)
+**Current phase:** Phase 3 — Settings UI
 **Current plan:** —
-**Status:** Phase 2 complete
+**Status:** Phase 3 planned — ready to execute
 
 ```
 Progress: [x] Phase 1  [ ] Phase 2  [ ] Phase 3  [ ] Phase 4
@@ -34,7 +34,7 @@ Progress: [x] Phase 1  [ ] Phase 2  [ ] Phase 3  [ ] Phase 4
 | Phases total | 4 |
 | Phases complete | 1 |
 | Requirements mapped | 19/19 |
-| Plans complete | 3 |
+| Plans complete | 8 |
 
 ---
 
