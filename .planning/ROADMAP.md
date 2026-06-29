@@ -48,7 +48,11 @@ Plans:
   2. Downloading the same pattern a second time applies the stored rule instantly — no network request made
   3. Claude API timeout or error results in the original filename being used — download completes, no hang
   4. Learned rules survive browser restart and service worker termination
-**Plans:** TBD
+**Plans:** 3 plans
+Plans:
+- [ ] 02-01-PLAN.md — computeFingerprint + applyTemplate pure functions with TDD unit tests (Wave 1)
+- [ ] 02-02-PLAN.md — Cloudflare Worker relay scaffold, VITE_WORKER_URL env var, host_permissions update (Wave 1, parallel)
+- [ ] 02-03-PLAN.md — Wire rename engine into background.ts: cache lookup + Worker call + rule storage + timeout (Wave 2)
 
 ---
 
@@ -86,8 +90,8 @@ Plans:
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/3 | Not started | - |
-| 2. Rename Engine | 0/? | Not started | - |
+| 1. Foundation | 3/3 | Complete | 2026-06-28 |
+| 2. Rename Engine | 0/3 | Planned | - |
 | 3. Settings UI | 0/? | Not started | - |
 | 4. Freemium + Store Submission | 0/? | Not started | - |
 
@@ -96,3 +100,4 @@ Plans:
 *Roadmap created: 2026-06-28*
 *Last updated: 2026-06-28 after FINAL scope ingest — Phase 3 expanded with rule editing, custom rules, conflict resolution (PATT-06/07/08, NOTIF-02); NOTIF-01 added to Phase 4; coverage 19→27*
 *Phase 1 plans finalized: 2026-06-28 — 3 plans, 2 waves*
+*Phase 2 plans finalized: 2026-06-28 — 3 plans, 2 waves*
