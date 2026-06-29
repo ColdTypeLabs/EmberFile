@@ -88,7 +88,14 @@ Plans:
   2. Monthly counter resets on the first day of the new calendar month and persists through browser restarts
   3. Premium license key unlocks unlimited renames and removes the upgrade prompt
   4. Extension is submitted to Chrome Web Store with privacy policy URL, store listing copy, and icon assets
-**Plans:** TBD
+**Plans:** 5 plans
+Plans:
+- [ ] 04-01-PLAN.md — storageLocalLicenseKey + freemium gate + alarms + notification listener (Wave 1)
+- [ ] 04-02-PLAN.md — Worker /validate-key route + KV binding + deployment checkpoint (Wave 1, parallel)
+- [ ] 04-05-PLAN.md — docs/privacy.html + STORE-LISTING.md + SCREENSHOTS.md + GitHub Pages checkpoint (Wave 1, parallel)
+- [ ] 04-03-PLAN.md — Popup: isPremium wiring + at-limit count format + upgrade banner (Wave 2, depends on 04-01)
+- [ ] 04-04-PLAN.md — Options: isPremium wiring + key redemption UX in AccountSection (Wave 2, depends on 04-01)
+**UI hint:** yes
 
 ---
 
@@ -99,7 +106,7 @@ Plans:
 | 1. Foundation | 3/3 | Complete | 2026-06-28 |
 | 2. Rename Engine | 3/3 | Complete | 2026-06-28 |
 | 3. Settings UI | 5/5 | Complete | 2026-06-28 |
-| 4. Freemium + Store Submission | 0/? | Not started | - |
+| 4. Freemium + Store Submission | 0/5 | Not started | - |
 
 ---
 
@@ -108,3 +115,4 @@ Plans:
 *Phase 1 plans finalized: 2026-06-28 — 3 plans, 2 waves*
 *Phase 2 plans finalized: 2026-06-28 — 3 plans, 2 waves*
 *Phase 3 plans finalized: 2026-06-28 — 5 plans, 4 waves*
+*Phase 4 plans finalized: 2026-06-29 — 5 plans, 2 waves (04-01/02/05 parallel Wave 1; 04-03/04 parallel Wave 2)*
