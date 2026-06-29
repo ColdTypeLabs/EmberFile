@@ -74,11 +74,14 @@ export async function handleDeterminingFilename(
         ),
       ]);
 
-      const { suggestedName, tag, renameFormat } = await response.json() as {
-        suggestedName: string;
-        tag: string;
-        renameFormat: string;
-      };
+      if (!response.ok) {
+        throw new Error(`Worker error: ${response.status}`);
+      }
+      const body = await response.json() as { suggestedName?: string; tag?: string; renameFormat?: string };
+      if (!body.suggestedName || !body.tag || !body.renameFormat) {
+        throw new Error('Invalid Worker response shape');
+      }
+      const { suggestedName, tag, renameFormat } = body;
 
       // D-15: full read → mutate → write-back
       const updatedRules = await storageRules.getValue();

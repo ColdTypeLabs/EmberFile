@@ -42,6 +42,7 @@ describe('handleDeterminingFilename — rename engine', () => {
   it('cache miss: calls Worker relay and renames with suggestedName + ext', async () => {
     await fakeBrowser.storage.local.set({ enabled: true });
     const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
       json: () =>
         Promise.resolve({
           suggestedName: 'expense-report',
@@ -62,6 +63,7 @@ describe('handleDeterminingFilename — rename engine', () => {
   it('cache miss: stores rule with matchCount: 1 after first Worker call', async () => {
     await fakeBrowser.storage.local.set({ enabled: true });
     const mockFetch = vi.fn().mockResolvedValue({
+      ok: true,
       json: () =>
         Promise.resolve({
           suggestedName: 'bank-statement',
