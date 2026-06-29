@@ -142,6 +142,9 @@ export default function App() {
       storageMonthlyCount.getValue(),
     ]).then(([enabled, count]) => {
       setState({ enabled, count, loaded: true });
+    }).catch(() => {
+      // Storage unavailable — default to safe values so popup doesn't stay in LoadingSkeleton (WR-02)
+      setState({ enabled: true, count: 0, loaded: true });
     });
   }, []);
 
