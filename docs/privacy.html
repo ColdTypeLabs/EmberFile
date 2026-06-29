@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download Renamer — Privacy Policy</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 640px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      line-height: 1.6;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 1rem 0;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+    }
+    th {
+      background: #f5f5f5;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #e0e0e0;
+      margin: 1.5rem 0;
+    }
+    .updated {
+      color: #555;
+      font-size: 0.9rem;
+    }
+    code {
+      background: #f0f0f0;
+      padding: 0.1rem 0.3rem;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Privacy Policy — Download Renamer</h1>
+  <p class="updated">Last updated: 2026-06-28</p>
+
+  <hr>
+
+  <h2>What this extension does</h2>
+
+  <p>
+    Download Renamer is a Chrome extension that automatically renames your downloaded files
+    using AI-suggested names. When you download a file, the extension sends the
+    <strong>filename</strong> (not the file contents) to a developer-operated relay to generate
+    a suggested rename.
+  </p>
+
+  <hr>
+
+  <h2>What data we collect</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Data</th>
+        <th>Collected?</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Filename (e.g., <code>report_v3_final.pdf</code>)</td>
+        <td>Yes — temporarily</td>
+        <td>Generates a suggested rename</td>
+      </tr>
+      <tr>
+        <td>File contents</td>
+        <td><strong>No — never</strong></td>
+        <td>Not transmitted at any step</td>
+      </tr>
+      <tr>
+        <td>Browsing history</td>
+        <td><strong>No — never</strong></td>
+        <td>Extension does not request tab permissions</td>
+      </tr>
+      <tr>
+        <td>Personal identifiers (name, email, IP)</td>
+        <td><strong>No — never</strong></td>
+        <td>No user account required; no identifier transmitted</td>
+      </tr>
+      <tr>
+        <td>Download URL or source website</td>
+        <td><strong>No — never</strong></td>
+        <td>Only the filename is used</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h2>How your data flows</h2>
+
+  <p>When you download a file, the following two-hop flow occurs:</p>
+
+  <ol>
+    <li>
+      <strong>Extension → Developer relay:</strong> The extension sends the filename to a relay
+      endpoint operated by the developer (Trevor McAllister). This endpoint extracts only an
+      <strong>anonymized pattern</strong> from the filename (example: "invoice + .pdf") — the
+      actual filename is not forwarded.
+    </li>
+    <li>
+      <strong>Developer relay → Claude Haiku (Anthropic):</strong> The relay sends only the
+      anonymized pattern to Anthropic's Claude Haiku API to generate a suggested rename.
+    </li>
+    <li>
+      <strong>Result returned:</strong> Claude returns a suggested name and tag. The relay
+      returns this to your extension. The relay logs only: the anonymized pattern, the
+      suggested tag, the rename format, and a timestamp.
+      <strong>Your actual filename is never logged.</strong>
+    </li>
+  </ol>
+
+  <hr>
+
+  <h2>API key and account</h2>
+
+  <p>
+    The developer holds the Claude API key. <strong>You do not need to provide or see an API
+    key.</strong> No user account, login, or registration is required to use this extension.
+  </p>
+
+  <hr>
+
+  <h2>Third parties</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Party</th>
+        <th>What they receive</th>
+        <th>Their privacy policy</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Anthropic (Claude Haiku)</td>
+        <td>
+          Anonymized filename pattern only (e.g., "invoice + .pdf") — never your actual filename
+        </td>
+        <td><a href="https://www.anthropic.com/privacy">https://www.anthropic.com/privacy</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>No other third parties receive your data.</p>
+
+  <hr>
+
+  <h2>Data retention</h2>
+
+  <ul>
+    <li>
+      The extension stores learned rename rules in your local browser storage
+      (<code>chrome.storage.local</code>). This data never leaves your device except as
+      described above.
+    </li>
+    <li>
+      Server logs retain only the anonymized pattern, tag, rename format, and timestamp.
+      Logs are retained for a maximum of 30 days.
+    </li>
+    <li>No personal data is retained server-side.</li>
+  </ul>
+
+  <hr>
+
+  <h2>Your rights</h2>
+
+  <p>
+    You may clear all locally stored rules at any time by uninstalling the extension or by
+    clearing the extension's storage via Chrome's developer tools.
+  </p>
+
+  <p>
+    To request deletion of any server-side log data, contact:
+    <strong>mtam6677@gmail.com</strong>
+  </p>
+
+  <hr>
+
+  <h2>Changes to this policy</h2>
+
+  <p>
+    If this policy changes materially, the effective date above will be updated and the change
+    will be noted in the extension's changelog.
+  </p>
+
+  <hr>
+
+  <h2>Contact</h2>
+
+  <p>
+    <strong>Developer:</strong> Trevor McAllister<br>
+    <strong>Email:</strong> mtam6677@gmail.com
+  </p>
+
+  <!-- GitHub Pages URL: update PRIVACY_URL in STORE-LISTING.md once Pages is enabled -->
+
+</body>
+</html>
