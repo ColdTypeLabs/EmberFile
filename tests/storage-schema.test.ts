@@ -5,7 +5,7 @@ import {
   storageMonthlyCount,
   storageMonthlyResetDate,
   storageRules,
-} from '../entrypoints/background';
+} from '../src/lib/storage';
 
 beforeEach(() => {
   fakeBrowser.reset();

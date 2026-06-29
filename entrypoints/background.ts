@@ -1,26 +1,13 @@
-import { storage } from '@wxt-dev/storage';
 import { computeFingerprint } from '../src/lib/fingerprint';
 import { applyTemplate } from '../src/lib/renameEngine';
-
-// --- Storage items (from Plan 01 — do not modify key names) ---
-export const storageEnabled = storage.defineItem<boolean>('local:enabled', {
-  fallback: true,
-});
-
-export const storageMonthlyCount = storage.defineItem<number>('local:monthlyCount', {
-  fallback: 0,
-});
-
-export const storageMonthlyResetDate = storage.defineItem<string>('local:monthlyResetDate', {
-  init: () => {
-    const now = new Date();
-    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
-  },
-});
-
-export const storageRules = storage.defineItem<
-  Record<string, { tag: string; renameFormat: string; matchCount: number }>
->('local:rules', { fallback: {} });
+import {
+  storageEnabled,
+  storageMonthlyCount,
+  storageMonthlyResetDate,
+  storageRules,
+  storageCustomRules,
+  storageConflict,
+} from '../src/lib/storage';
 
 const WORKER_URL = import.meta.env.VITE_WORKER_URL;
 
@@ -46,6 +33,25 @@ export async function handleDeterminingFilename(
     if (rules[fingerprint]) {
       // Cache hit — apply locally, no network request
       const rule = rules[fingerprint];
+
+      // D-20/D-21/D-22: Conflict detection — check if any custom rule also matches this filename
+      const customRules = await storageCustomRules.getValue();
+      const matchingCustomRule = Object.values(customRules).find(
+        (cr) => originalName.toLowerCase().includes(cr.matchText.toLowerCase())
+      );
+      if (matchingCustomRule) {
+        // First-conflict-wins (D-22): only write if no pending conflict is already queued
+        const existingConflict = await storageConflict.getValue();
+        if (existingConflict === null) {
+          await storageConflict.setValue({
+            fingerprint,
+            customRule: { matchText: matchingCustomRule.matchText, renameFormat: matchingCustomRule.renameFormat },
+            learnedRule: { tag: rule.tag, renameFormat: rule.renameFormat },
+          });
+        }
+        // D-21: learned rule applied as fallback regardless of conflict state
+      }
+
       rule.matchCount++;
       await storageRules.setValue(rules);
       const newStem = applyTemplate(rule.renameFormat, rule.tag, rule.matchCount);
