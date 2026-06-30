@@ -2,22 +2,22 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: Phase 4 — Freemium + Store Submission
-current_plan: Popup UI Redesign — EXECUTED (plan at `CLI/plans/read-state-md-and-execute-typed-noodle.md`). Dark 3-screen popup live, options page stubbed, styling polish pass done.
+current_phase: 04
+current_plan: 1
 status: executing
-last_updated: "2026-06-30T05:17:48.980Z"
+last_updated: "2026-06-30T05:38:12.374Z"
 progress:
   total_phases: 4
   completed_phases: 3
   total_plans: 17
-  completed_plans: 14
+  completed_plans: 15
   percent: 75
 ---
 
 # Project State: Download Renamer Web Extension
 
-**Last updated:** 2026-06-29
-**Status:** Ready to execute
+**Last updated:** 2026-06-30
+**Status:** Executing Phase 04
 
 ---
 
@@ -25,19 +25,21 @@ progress:
 
 **Core value:** New downloads get smart, consistent names automatically — Claude once per pattern, local rules forever after.
 
-**Current focus:** Phase 4 — popup UI redesign is DONE (3-screen dark popup, license key activation UI, upgrade banner, build clean, 36/36 tests pass). Remaining work to actually ship: two manual checkpoints (Cloudflare KV, GitHub Pages) + replacing TBD placeholder URLs + freemium gate wiring.
+**Current focus:** Phase 04 — freemium-store
 
 ---
 
 ## Current Position
 
+Phase: 04 (freemium-store) — EXECUTING
+Plan: 06 of 6 complete
 **Milestone:** v1 — Chrome Web Store Launch
-**Current phase:** Phase 4 — Freemium + Store Submission
-**Current plan:** Popup UI Redesign — EXECUTED (plan at `CLI/plans/read-state-md-and-execute-typed-noodle.md`). Dark 3-screen popup live, options page stubbed, styling polish pass done.
-**Status:** Phase 4 — UI redesign complete. Wave 1 checkpoints (04-02 Cloudflare KV, 04-05 GitHub Pages) still open. Freemium gate enforcement, real upgrade URL, and store assets remain.
+**Current phase:** 04
+**Current plan:** 06 (complete)
+**Status:** Phase 4 — UI redesign complete. Notification button-click guard (04-06) closed. Wave 1 checkpoints (04-02 Cloudflare KV, 04-05 GitHub Pages) still open. Plans 04-03/04-04 (popup freemium UI, key redemption) remain unexecuted.
 
 ```
-Progress: [x] Phase 1  [x] Phase 2  [x] Phase 3  [ ] Phase 4
+Progress: [█████████░] 88%
           25%          50%          75%                   100%
 ```
 
@@ -50,7 +52,11 @@ Progress: [x] Phase 1  [x] Phase 2  [x] Phase 3  [ ] Phase 4
 | Phases total | 4 |
 | Phases complete | 3 |
 | Requirements mapped | 27/27 |
-| Plans complete | 14 |
+| Plans complete | 15 |
+
+| Phase | Plan | Duration | Tasks | Files |
+|-------|------|----------|-------|-------|
+| 04 | 06 | 6min | 1 | 2 |
 
 ---
 
@@ -75,6 +81,7 @@ Progress: [x] Phase 1  [x] Phase 2  [x] Phase 3  [ ] Phase 4
 | Privacy policy hosted via GitHub Pages /docs folder | No separate hosting infrastructure required |
 | Store listing name 34 chars, short desc 105 chars | Well within Chrome Web Store limits (45/132 chars) |
 | Upgrade URL and privacy URL left as explicit PLACEHOLDERs | Must be replaced before submission — marked clearly in STORE-LISTING.md |
+| Notification button-click guard extracted as exported pure function `shouldOpenUpgradeUrl` | Avoids brittle import-time `addListener` stubbing in tests; mirrors existing `handleDeterminingFilename` export pattern |
 
 ### Architecture Constraints (must not violate)
 
@@ -102,7 +109,7 @@ Progress: [x] Phase 1  [x] Phase 2  [x] Phase 3  [ ] Phase 4
 - [ ] Create store assets: 128×128 icon, 440×280 promo tile, store listing copy (listing copy done in STORE-LISTING.md; icon/promo tile are Trevor's manual step)
 - [ ] Replace `UPGRADE_URL` and `CHROME_STORE_URL` placeholders in `src/lib/constants.ts` (still `example.com` / generic webstore URL — both marked TBD in code; tracked in STORE-LISTING.md pre-submission checklist)
 - [ ] Confirm `/validate-key` worker endpoint works against the real KV namespace once 04-02 is done
-- [ ] **04-06 (new, from cross-AI review):** guard `chrome.notifications.onButtonClicked` on `notifId === 'limitReached'`, not just `btnIdx === 0` — currently any future notification with a button at index 0 would wrongly open the upgrade URL
+- [x] **04-06 (from cross-AI review):** guard `chrome.notifications.onButtonClicked` on `notifId === 'limitReached'`, not just `btnIdx === 0` — closed via exported `shouldOpenUpgradeUrl()` pure function + 3 regression tests (commit 3352f3f)
 - [ ] **04-04 (found during replan verification):** `handleActivateKey`'s fetch to `/validate-key` has no 5-second `Promise.race` timeout, unlike every other Worker call in this codebase — add one
 - [ ] **04-03/04-04 (new):** no regression tests exist yet for the popup freemium UI or key-redemption flow — add `tests/popup-freemium.test.tsx` and `tests/popup-key-redemption.test.tsx`
 

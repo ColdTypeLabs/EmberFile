@@ -35,7 +35,7 @@
 
 ### Notifications
 
-- [ ] **NOTIF-01**: Extension shows a toast notification when the free tier monthly limit is reached; file stays unrenamed; toast includes an upgrade call-to-action
+- [x] **NOTIF-01**: Extension shows a toast notification when the free tier monthly limit is reached; file stays unrenamed; toast includes an upgrade call-to-action
 - [ ] **NOTIF-02**: Extension shows a toast or modal when a rule conflict is detected; UI presents both matching rules for user selection
 
 ### Monetization
@@ -107,7 +107,7 @@
 | SET-03 | Phase 3 | Pending |
 | SET-04 | Phase 3 | Pending |
 | SET-05 | Phase 3 | Pending |
-| NOTIF-01 | Phase 4 | Pending |
+| NOTIF-01 | Phase 4 | Complete |
 | NOTIF-02 | Phase 3 | Pending |
 | MON-01 | Phase 4 | Pending |
 | MON-02 | Phase 4 | Pending |

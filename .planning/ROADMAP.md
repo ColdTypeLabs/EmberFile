@@ -105,19 +105,19 @@ Plans:
   3. Premium license key unlocks unlimited renames and removes the upgrade prompt
   4. Extension is submitted to Chrome Web Store with privacy policy URL, store listing copy, and icon assets
 
-**Plans:** 6 plans
+**Plans:** 4/6 plans executed
 Plans:
 **Wave 1**
 
 - [x] 04-01-PLAN.md — storageLocalLicenseKey + freemium gate + alarms + notification listener (Wave 1) — EXECUTED
-- [ ] 04-02-PLAN.md — Worker /validate-key route + KV binding + deployment checkpoint (Wave 1, parallel) — code done, Cloudflare KV checkpoint pending
+- [x] 04-02-PLAN.md — Worker /validate-key route + KV binding + deployment checkpoint (Wave 1, parallel) — code done, Cloudflare KV checkpoint pending
 - [x] 04-05-PLAN.md — docs/privacy.html + STORE-LISTING.md + SCREENSHOTS.md + GitHub Pages checkpoint (Wave 1, parallel) — code done, GitHub Pages checkpoint pending
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
 - [ ] 04-03-PLAN.md — Reconciled: verify popup freemium UI (isPremium wiring + at-limit banner, already built in popup/App.tsx) + add regression tests (Wave 2, depends on 04-01)
 - [ ] 04-04-PLAN.md — Reconciled: verify popup key redemption flow (already built in popup/App.tsx SettingsScreen, not options/App.tsx) + add 5s timeout + regression tests (Wave 2, depends on 04-01)
-- [ ] 04-06-PLAN.md — Notification ID guard fix on chrome.notifications.onButtonClicked (Codex review finding) + regression test (Wave 2, depends on 04-01)
+- [x] 04-06-PLAN.md — Notification ID guard fix on chrome.notifications.onButtonClicked (Codex review finding) + regression test (Wave 2, depends on 04-01)
 
 **UI hint:** yes
 
@@ -132,7 +132,7 @@ Plans:
 | 1. Foundation | 3/3 | Complete | 2026-06-28 |
 | 2. Rename Engine | 3/3 | Complete | 2026-06-28 |
 | 3. Settings UI | 5/5 | Complete | 2026-06-28 |
-| 4. Freemium + Store Submission | 3/6 (04-01, 04-02 code, 04-05 code complete; checkpoints pending) | In progress | - |
+| 4. Freemium + Store Submission | 4/6 | In Progress|  |
 
 ---
 
