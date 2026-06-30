@@ -12,7 +12,7 @@
 - [x] **Phase 1: Foundation** - WXT build pipeline, MV3 event hook, storage schema, privacy policy (Complete 2026-06-28)
 - [x] **Phase 2: Rename Engine** - Claude integration, pattern learning, local cache matching (Complete 2026-06-28)
 - [x] **Phase 3: Settings UI** - Popup, options page, rule viewer, inline editing, custom rules, conflict resolution (Complete 2026-06-28)
-- [ ] **Phase 4: Freemium + Store Submission** - Usage gating, upgrade prompt, store assets
+- [x] **Phase 4: Freemium + Store Submission** - Usage gating, upgrade prompt, store assets (completed 2026-06-30)
 
 ---
 
@@ -105,7 +105,7 @@ Plans:
   3. Premium license key unlocks unlimited renames and removes the upgrade prompt
   4. Extension is submitted to Chrome Web Store with privacy policy URL, store listing copy, and icon assets
 
-**Plans:** 5/6 plans executed
+**Plans:** 6/6 plans complete
 Plans:
 **Wave 1**
 
@@ -116,7 +116,7 @@ Plans:
 **Wave 2** *(blocked on Wave 1 completion)*
 
 - [x] 04-03-PLAN.md — Reconciled: verify popup freemium UI (isPremium wiring + at-limit banner, already built in popup/App.tsx) + add regression tests (Wave 2, depends on 04-01)
-- [ ] 04-04-PLAN.md — Reconciled: verify popup key redemption flow (already built in popup/App.tsx SettingsScreen, not options/App.tsx) + add 5s timeout + regression tests (Wave 2, depends on 04-01)
+- [x] 04-04-PLAN.md — Reconciled: verify popup key redemption flow (already built in popup/App.tsx SettingsScreen, not options/App.tsx) + add 5s timeout + regression tests (Wave 2, depends on 04-01)
 - [x] 04-06-PLAN.md — Notification ID guard fix on chrome.notifications.onButtonClicked (Codex review finding) + regression test (Wave 2, depends on 04-01)
 
 **UI hint:** yes
@@ -132,7 +132,7 @@ Plans:
 | 1. Foundation | 3/3 | Complete | 2026-06-28 |
 | 2. Rename Engine | 3/3 | Complete | 2026-06-28 |
 | 3. Settings UI | 5/5 | Complete | 2026-06-28 |
-| 4. Freemium + Store Submission | 5/6 | In Progress|  |
+| 4. Freemium + Store Submission | 6/6 | Complete   | 2026-06-30 |
 
 ---
 

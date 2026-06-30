@@ -42,7 +42,7 @@
 
 - [ ] **MON-01**: Free tier allows maximum 5 file renames per calendar month; counter auto-resets on the 1st of each month
 - [x] **MON-02**: Free tier displays upgrade prompt and ad unit in the settings panel
-- [ ] **MON-03**: Premium tier ($2.99/month) unlocks unlimited renames and removes ads; verified via client-side license key in v1
+- [x] **MON-03**: Premium tier ($2.99/month) unlocks unlimited renames and removes ads; verified via client-side license key in v1
 - [ ] **MON-04**: Free-tier monthly counter is written to `chrome.storage.local` immediately on every increment (survives service worker restart); `chrome.alarms` triggers monthly reset
 
 ### Quality & Store Readiness
@@ -111,7 +111,7 @@
 | NOTIF-02 | Phase 3 | Pending |
 | MON-01 | Phase 4 | Pending |
 | MON-02 | Phase 4 | Complete |
-| MON-03 | Phase 4 | Pending |
+| MON-03 | Phase 4 | Complete |
 | MON-04 | Phase 4 | Pending |
 | QUAL-02 | Phase 1 | Pending |
 | QUAL-03 | Phase 4 | Pending |

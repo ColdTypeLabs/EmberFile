@@ -5,13 +5,13 @@ milestone_name: milestone
 current_phase: 04
 current_plan: 03 (complete)
 status: executing
-last_updated: "2026-06-30T05:46:36.837Z"
+last_updated: "2026-06-30T05:52:49.828Z"
 progress:
   total_phases: 4
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 17
-  completed_plans: 16
-  percent: 94
+  completed_plans: 17
+  percent: 100
 ---
 
 # Project State: Download Renamer Web Extension
@@ -32,14 +32,14 @@ progress:
 ## Current Position
 
 Phase: 04 (freemium-store) — EXECUTING
-Plan: 03 of 6 complete (04-06 also complete, executed earlier in wave 2)
+Plan: 4 of 6 complete (04-06 also complete, executed earlier in wave 2)
 **Milestone:** v1 — Chrome Web Store Launch
 **Current phase:** 04
-**Current plan:** 03 (complete)
-**Status:** Phase 4 — popup freemium UI verified against 04-UI-SPEC.md must-haves (04-03); no production code changes needed, regression tests added. Notification button-click guard (04-06) also closed. Wave 1 checkpoints (04-02 Cloudflare KV, 04-05 GitHub Pages) still open. Plan 04-04 (key redemption flow) remains unexecuted.
+**Current plan:** 04 (complete)
+**Status:** Phase 4 — key redemption flow (04-04) verified and closed: 5-second Promise.race timeout added to handleActivateKey (T-04-16), 6 regression tests added. Popup freemium UI (04-03) and notification button-click guard (04-06) also closed. All 6 of 6 Phase 4 plans now have SUMMARY.md files (ROADMAP.md auto-marks Phase 4 "Complete" on that basis), but Wave 1 human-action checkpoints (04-02 Cloudflare KV deploy, 04-05 GitHub Pages publish) are STILL OPEN and block Chrome Web Store submission. "Complete" in ROADMAP.md/STATE.md progress counters means "all plans executed," not "ready to ship" — see Next Actions below for the two outstanding manual steps.
 
 ```
-Progress: [█████████░] 94%
+Progress: [██████████] 100%
           25%          50%          75%                   100%
 ```
 
@@ -58,6 +58,7 @@ Progress: [█████████░] 94%
 |-------|------|----------|-------|-------|
 | 04 | 06 | 6min | 1 | 2 |
 | 04 | 03 | 12min | 1 | 4 |
+| 04 | 04 | 18min | 1 | 2 |
 
 ---
 
@@ -85,6 +86,7 @@ Progress: [█████████░] 94%
 | Notification button-click guard extracted as exported pure function `shouldOpenUpgradeUrl` | Avoids brittle import-time `addListener` stubbing in tests; mirrors existing `handleDeterminingFilename` export pattern |
 | Popup freemium UI (entrypoints/popup/App.tsx) confirmed to already match 04-UI-SPEC.md D-08/D-09/D-10 | 04-03 was a reconciliation plan, not new implementation — prior ad-hoc redesign already shipped isPremium wiring, upgrade banner, and FREE/PREMIUM badge; no code changes needed |
 | jsdom + @testing-library/react + @testing-library/jest-dom added as devDependencies | 04-03 plan assumed these existed (referencing tests/background.test.ts) but they were absent from package.json/node_modules; verified legitimacy via npm registry before installing |
+| handleActivateKey's fetch wrapped in 5-second Promise.race timeout | Closes T-04-16 (DoS gap) — matches the existing background.ts Worker-call pattern; timeout rejects with TypeError so it routes to the network-error copy branch, not the invalid-key branch |
 
 ### Architecture Constraints (must not violate)
 
@@ -113,9 +115,9 @@ Progress: [█████████░] 94%
 - [ ] Replace `UPGRADE_URL` and `CHROME_STORE_URL` placeholders in `src/lib/constants.ts` (still `example.com` / generic webstore URL — both marked TBD in code; tracked in STORE-LISTING.md pre-submission checklist)
 - [ ] Confirm `/validate-key` worker endpoint works against the real KV namespace once 04-02 is done
 - [x] **04-06 (from cross-AI review):** guard `chrome.notifications.onButtonClicked` on `notifId === 'limitReached'`, not just `btnIdx === 0` — closed via exported `shouldOpenUpgradeUrl()` pure function + 3 regression tests (commit 3352f3f)
-- [ ] **04-04 (found during replan verification):** `handleActivateKey`'s fetch to `/validate-key` has no 5-second `Promise.race` timeout, unlike every other Worker call in this codebase — add one
+- [x] **04-04 (closed):** `handleActivateKey`'s fetch to `/validate-key` now wrapped in a 5-second `Promise.race` timeout, matching every other Worker call in this codebase (commit 2e2c16b)
 - [x] **04-03 (closed):** popup freemium UI verified against must-haves (no changes needed); `tests/popup-freemium.test.tsx` added with 4 regression tests (commit 93bd818)
-- [ ] **04-04 (new):** `tests/popup-key-redemption.test.tsx` still needed for the key-redemption flow
+- [x] **04-04 (closed):** `tests/popup-key-redemption.test.tsx` added — 6 regression tests for the key-redemption flow (commit 2e2c16b)
 
 **Note on Phase 4 replanning (2026-06-30):** `/gsd:plan-phase 4 --reviews` ran after the Codex cross-AI review (`04-REVIEWS.md`). Found the implementation had drifted ahead of the plan docs (executed via an ad-hoc popup redesign pass, not the original 04-03/04-04 plan text) and that most HIGH/MEDIUM review concerns were already resolved in code. Rewrote 04-03/04-04 to target the actual `entrypoints/popup/App.tsx` architecture and added 04-06 for the one real remaining gap (notification ID guard). Phase 4 is now 6 plans across 2 waves.
 
