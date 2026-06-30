@@ -10,10 +10,9 @@ import {
   storageLocalLicenseKey,
 } from '../src/lib/storage';
 
-const WORKER_URL = import.meta.env.VITE_WORKER_URL;
+import { UPGRADE_URL } from '../src/lib/constants';
 
-// Trevor replaces this URL before Web Store submission
-const UPGRADE_URL = 'https://example.com/upgrade';
+const WORKER_URL = import.meta.env.VITE_WORKER_URL;
 
 // --- Helper: returns the Unix timestamp (ms) of the first day of next month ---
 function getFirstOfNextMonthMs(): number {
@@ -55,8 +54,14 @@ async function setupAlarms(): Promise<void> {
 
 // --- Top-level listeners (registered synchronously at module init — MV3 requirement) ---
 
+// Extracted as a pure function for unit testability — guards against any future
+// notification type with a button at index 0 from misrouting to the upgrade URL.
+export function shouldOpenUpgradeUrl(notifId: string, btnIdx: number): boolean {
+  return notifId === 'limitReached' && btnIdx === 0;
+}
+
 chrome.notifications.onButtonClicked.addListener((notifId, btnIdx) => {
-  if (btnIdx === 0) {
+  if (shouldOpenUpgradeUrl(notifId, btnIdx)) {
     chrome.tabs.create({ url: UPGRADE_URL });
   }
 });

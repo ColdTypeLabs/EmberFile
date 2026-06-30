@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { fakeBrowser } from '@webext-core/fake-browser';
-import { handleDeterminingFilename } from '../entrypoints/background';
+import { handleDeterminingFilename, shouldOpenUpgradeUrl } from '../entrypoints/background';
 import { storageRules } from '../src/lib/storage';
 
 beforeEach(async () => {
@@ -134,5 +134,19 @@ describe('handleDeterminingFilename — rename engine', () => {
 
     // Exactly once — not zero (download would hang), not two (API violation)
     expect(suggest).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('shouldOpenUpgradeUrl — notification button-click guard', () => {
+  it('returns true for limitReached notification with button index 0', () => {
+    expect(shouldOpenUpgradeUrl('limitReached', 0)).toBe(true);
+  });
+
+  it('returns false for a non-matching notification ID with button index 0', () => {
+    expect(shouldOpenUpgradeUrl('someOtherNotification', 0)).toBe(false);
+  });
+
+  it('returns false for limitReached notification with a non-zero button index', () => {
+    expect(shouldOpenUpgradeUrl('limitReached', 1)).toBe(false);
   });
 });
