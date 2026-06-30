@@ -88,14 +88,17 @@ Plans:
   2. Monthly counter resets on the first day of the new calendar month and persists through browser restarts
   3. Premium license key unlocks unlimited renames and removes the upgrade prompt
   4. Extension is submitted to Chrome Web Store with privacy policy URL, store listing copy, and icon assets
-**Plans:** 5 plans
+**Plans:** 6 plans
 Plans:
-- [ ] 04-01-PLAN.md — storageLocalLicenseKey + freemium gate + alarms + notification listener (Wave 1)
-- [ ] 04-02-PLAN.md — Worker /validate-key route + KV binding + deployment checkpoint (Wave 1, parallel)
-- [ ] 04-05-PLAN.md — docs/privacy.html + STORE-LISTING.md + SCREENSHOTS.md + GitHub Pages checkpoint (Wave 1, parallel)
-- [ ] 04-03-PLAN.md — Popup: isPremium wiring + at-limit count format + upgrade banner (Wave 2, depends on 04-01)
-- [ ] 04-04-PLAN.md — Options: isPremium wiring + key redemption UX in AccountSection (Wave 2, depends on 04-01)
+- [x] 04-01-PLAN.md — storageLocalLicenseKey + freemium gate + alarms + notification listener (Wave 1) — EXECUTED
+- [ ] 04-02-PLAN.md — Worker /validate-key route + KV binding + deployment checkpoint (Wave 1, parallel) — code done, Cloudflare KV checkpoint pending
+- [x] 04-05-PLAN.md — docs/privacy.html + STORE-LISTING.md + SCREENSHOTS.md + GitHub Pages checkpoint (Wave 1, parallel) — code done, GitHub Pages checkpoint pending
+- [ ] 04-03-PLAN.md — Reconciled: verify popup freemium UI (isPremium wiring + at-limit banner, already built in popup/App.tsx) + add regression tests (Wave 2, depends on 04-01)
+- [ ] 04-04-PLAN.md — Reconciled: verify popup key redemption flow (already built in popup/App.tsx SettingsScreen, not options/App.tsx) + add 5s timeout + regression tests (Wave 2, depends on 04-01)
+- [ ] 04-06-PLAN.md — Notification ID guard fix on chrome.notifications.onButtonClicked (Codex review finding) + regression test (Wave 2, depends on 04-01)
 **UI hint:** yes
+
+**Note (2026-06-29, reviews mode replan):** Phase 4 UI architecture diverged from the original 04-03/04-04 plan text during an ad-hoc popup redesign (see STATE.md). All popup-facing Phase 4 work (isPremium wiring, upgrade banner, key redemption) now lives in entrypoints/popup/App.tsx; entrypoints/options/App.tsx is an intentional stub. 04-03 and 04-04 were rewritten to verify-and-test the actual shipped code rather than re-describe a UI structure that no longer exists. 04-06 was added to close the one still-open Codex cross-AI review finding (notification ID guard); all other review findings were confirmed already resolved in code.
 
 ---
 
@@ -106,7 +109,7 @@ Plans:
 | 1. Foundation | 3/3 | Complete | 2026-06-28 |
 | 2. Rename Engine | 3/3 | Complete | 2026-06-28 |
 | 3. Settings UI | 5/5 | Complete | 2026-06-28 |
-| 4. Freemium + Store Submission | 0/5 | Not started | - |
+| 4. Freemium + Store Submission | 3/6 (04-01, 04-02 code, 04-05 code complete; checkpoints pending) | In progress | - |
 
 ---
 
@@ -116,3 +119,4 @@ Plans:
 *Phase 2 plans finalized: 2026-06-28 — 3 plans, 2 waves*
 *Phase 3 plans finalized: 2026-06-28 — 5 plans, 4 waves*
 *Phase 4 plans finalized: 2026-06-29 — 5 plans, 2 waves (04-01/02/05 parallel Wave 1; 04-03/04 parallel Wave 2)*
+*Phase 4 plans reconciled (reviews mode): 2026-06-29 — 6 plans, 2 waves (04-01/02/05 parallel Wave 1; 04-03/04/06 parallel Wave 2). 04-03/04-04 rewritten to match shipped popup-consolidated UI; 04-06 added for notification ID guard fix.*
