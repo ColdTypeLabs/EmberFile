@@ -14,6 +14,18 @@ import { UPGRADE_URL } from '../src/lib/constants';
 
 const WORKER_URL = import.meta.env.VITE_WORKER_URL;
 
+// Serializes concurrent storageMonthlyCount increments within a single SW session.
+// Two simultaneous downloads could otherwise both read count=N, both write N+1, losing one increment.
+// Module-level is intentional here — this is a control primitive, not persisted state.
+let _counterLock = Promise.resolve();
+function incrementMonthlyCount(): Promise<void> {
+  _counterLock = _counterLock.then(async () => {
+    const current = await storageMonthlyCount.getValue();
+    await storageMonthlyCount.setValue(current + 1);
+  });
+  return _counterLock;
+}
+
 // --- Helper: returns the Unix timestamp (ms) of the first day of next month ---
 function getFirstOfNextMonthMs(): number {
   const now = new Date();
@@ -143,9 +155,7 @@ export async function handleDeterminingFilename(
       const newStem = applyTemplate(rule.renameFormat, rule.tag, rule.matchCount);
       suggest({ filename: newStem + ext, conflictAction: 'uniquify' });
       suggested = true;
-      // WR-04: increment monthly counter after successful rename (cache-hit path)
-      const currentCount = await storageMonthlyCount.getValue();
-      await storageMonthlyCount.setValue(currentCount + 1);
+      await incrementMonthlyCount();
     } else {
       // Cache miss — call Worker relay with 5-second timeout
       const response = await Promise.race([
