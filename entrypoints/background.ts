@@ -189,9 +189,7 @@ export async function handleDeterminingFilename(
 
       suggest({ filename: suggestedName + ext, conflictAction: 'uniquify' });
       suggested = true;
-      // WR-04: increment monthly counter after successful rename (cache-miss path)
-      const currentCount = await storageMonthlyCount.getValue();
-      await storageMonthlyCount.setValue(currentCount + 1);
+      await incrementMonthlyCount();
     }
   } catch {
     // Storage or network errors must not hang downloads — fall through to finally

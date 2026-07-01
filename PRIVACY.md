@@ -73,7 +73,7 @@ You may clear all locally stored rules at any time by uninstalling the extension
 clearing the extension's storage via Chrome's developer tools.
 
 To request deletion of any server-side log data, contact:
-**mtam6677@gmail.com**
+**ColdtypeLabs.support@proton.me**
 
 ---
 
@@ -87,4 +87,4 @@ change will be noted in the extension's changelog.
 ## Contact
 
 **Developer:** Trevor McAllister
-**Email:** mtam6677@gmail.com
+**Email:** ColdtypeLabs.support@proton.me
