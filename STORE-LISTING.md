@@ -4,7 +4,7 @@
 
 Download Renamer — AI File Naming
 
-*(34 characters — within the 45-character limit. Trevor may edit.)*
+*(34 characters — within the 45-character limit. TM may edit.)*
 
 ---
 
@@ -12,7 +12,7 @@ Download Renamer — AI File Naming
 
 Auto-renames downloads using AI. First download uses Claude; every repeat uses a saved rule — zero API cost.
 
-*(105 characters. Trevor may edit.)*
+*(105 characters. TM may edit.)*
 
 ---
 
@@ -43,7 +43,7 @@ Productivity
 
 ---
 
-## Icon Assets Required (manual — Trevor provides)
+## Icon Assets Required (manual — TM provides)
 
 - 16×16 PNG → `public/icons/icon-16.png`
 - 48×48 PNG → `public/icons/icon-48.png`
@@ -55,7 +55,7 @@ Productivity
 
 ## Store Promo Tile
 
-440×280 PNG — required for store listing (affects ranking). Trevor creates a simple branded image.
+440×280 PNG — required for store listing (affects ranking). TM creates a simple branded image.
 
 - Size: 440px × 280px
 - Format: PNG
@@ -65,10 +65,10 @@ Productivity
 
 ## Privacy Policy URL
 
-PLACEHOLDER: https://ya-boy-mac.github.io/Download-Renamer-Web-Extension/privacy.html
+https://coldtypelabs.github.io/Download-Renamer-Web-Extension-privacy/privacy.html
 
-→ Trevor confirms after enabling GitHub Pages (Settings → Pages → main branch → /docs).
-Update this file and all references once the live URL is confirmed.
+→ Using dedicated privacy repo: github.com/ColdTypeLabs/Download-Renamer-Web-Extension-privacy
+→ Confirm once GitHub Pages is enabled on that repo and the URL is live.
 
 ---
 
@@ -94,3 +94,10 @@ PLACEHOLDER: https://example.com/upgrade
 - [ ] Extension loads clean in Chrome (no console errors)
 - [ ] Manual test: 6th download shows notification and original filename retained
 - [ ] Manual test: Valid license key activation flips badge to PREMIUM
+
+---
+
+## Developer Contact
+
+**Developer:** TM  
+**Support:** ColdtypeLabs.support@proton.me
