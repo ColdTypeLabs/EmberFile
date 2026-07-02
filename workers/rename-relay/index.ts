@@ -3,14 +3,41 @@
 // The Anthropic API key is held in Cloudflare's secret binding only; it never ships
 // in the extension bundle.
 
-const SYSTEM_PROMPT = `You are a file rename assistant. Given a filename, MIME type, and file size,
-return ONLY valid JSON with this exact schema:
+const SYSTEM_PROMPT = `You are a personal assistant organizing someone's Downloads folder.
+Your job: give this file a clean, human name — the way a tidy person would label it in a filing cabinet.
+You will receive the filename, MIME type, file size, download URL, and referrer page URL.
+Use the URL and referrer as strong context clues — they often reveal what the file actually is
+(e.g. a URL containing "chase.com/statements" tells you it's a bank statement even if the filename is gibberish).
+
+Rules (follow all of them):
+- Output ONLY valid JSON, no prose, no markdown, no explanation.
+- "suggestedName": 2–4 plain English words, Title Case, spaces not underscores, NO extension.
+  Strip ALL of the following from the original name before thinking: timestamps, dates, version
+  numbers (v1, v2, 1.2.47), build tags (x86_64, release, setup), duplicate counters ((1), (2)),
+  noise suffixes (FINAL, revised, updated, copy, draft, new), and any raw UUIDs or hash strings.
+  What remains should answer "what IS this file?" not "when was it made or where did it come from?"
+  Use the URL/referrer to add specificity — prefer "Chase Statement June" over just "Bank Statement"
+  when the source domain makes it clear.
+- "tag": one lowercase word — the category. Examples: invoice, receipt, statement, report, photo,
+  video, installer, document, spreadsheet, notes, contract, export.
+- "renameFormat": a reusable template for future files of the same pattern. Use only the slots
+  {tag}, {date}, {index}. Keep it short. Example: "{tag} {date}" or "{tag} {index}".
+
+Examples of good renames:
+  report_20260630_143022_v2_FINAL.pdf  →  "Q2 Report"
+  data_export_june_2026_v3_FINAL_revised.xlsx  →  "Sales Export"
+  IMG_20260528_134521.jpg  →  "Downloaded Photo"
+  setup_x86_64_1.2.47_release.exe  →  "App Installer"
+  zoom_recording_2026_06_30T09_15_00.mp4  →  "Meeting Recording"
+  document.docx  →  "Document" (or infer from MIME/context if possible)
+  export (3).csv  →  "Data Export"
+
+Return schema:
 {
-  "suggestedName": "string — the specific new filename for this file, no extension",
-  "tag": "string — short category label (e.g. invoice, receipt, screenshot, report)",
-  "renameFormat": "string — reusable template using only {tag}, {date}, {index} slots"
-}
-Do not include any text outside the JSON object.`;
+  "suggestedName": "string",
+  "tag": "string",
+  "renameFormat": "string"
+}`;
 
 export interface Env {
   ANTHROPIC_API_KEY: string;
@@ -65,7 +92,17 @@ export default {
         filename: string;
         mimeType: string;
         fileSize: number;
+        url?: string;
+        referrer?: string;
       }>();
+
+      const contextLines = [
+        `filename: ${body.filename}`,
+        `mimeType: ${body.mimeType}`,
+        `fileSize: ${body.fileSize}`,
+        body.url ? `downloadUrl: ${body.url}` : '',
+        body.referrer ? `referrerPage: ${body.referrer}` : '',
+      ].filter(Boolean).join('\n');
 
       const res = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
@@ -81,14 +118,15 @@ export default {
           messages: [
             {
               role: 'user',
-              content: `filename: ${body.filename}\nmimeType: ${body.mimeType}\nfileSize: ${body.fileSize}`,
+              content: contextLines,
             },
           ],
         }),
       });
 
       if (!res.ok) {
-        return new Response(JSON.stringify({ error: 'upstream_error' }), {
+        const errBody = await res.text();
+        return new Response(JSON.stringify({ error: 'upstream_error', status: res.status, detail: errBody }), {
           status: 502,
           headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
         });

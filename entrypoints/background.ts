@@ -8,11 +8,23 @@ import {
   storageCustomRules,
   storageConflict,
   storageLocalLicenseKey,
+  storageHasConsented,
 } from '../src/lib/storage';
 
 import { UPGRADE_URL } from '../src/lib/constants';
 
 const WORKER_URL = import.meta.env.VITE_WORKER_URL;
+
+// Strips query params and fragments — keeps hostname + path only.
+// Prevents account numbers, session tokens, and user IDs from leaving the device.
+function sanitizeUrl(raw: string): string {
+  try {
+    const u = new URL(raw);
+    return u.hostname + u.pathname;
+  } catch {
+    return '';
+  }
+}
 
 // Serializes concurrent storageMonthlyCount increments within a single SW session.
 // Two simultaneous downloads could otherwise both read count=N, both write N+1, losing one increment.
@@ -100,6 +112,18 @@ export async function handleDeterminingFilename(
     // Compute originalName first — needed for both the gate and the rename logic
     const originalName = downloadItem.filename.split(/[/\\]/).pop() ?? downloadItem.filename;
 
+    // --- Consent gate — no data leaves the device until the user has acknowledged ---
+    const hasConsented = await storageHasConsented.getValue();
+    if (!hasConsented) {
+      suggest({ filename: originalName });
+      suggested = true;
+      // Open the popup so the user sees the consent screen
+      chrome.action.openPopup().catch(() => {
+        // openPopup() requires the browser to be focused; silently ignore if it fails
+      });
+      return;
+    }
+
     // --- Freemium gate ---
     const licenseKey = await storageLocalLicenseKey.getValue();
     const isPremium = !!licenseKey;
@@ -166,6 +190,8 @@ export async function handleDeterminingFilename(
             filename: originalName,
             mimeType: downloadItem.mime ?? '',
             fileSize: downloadItem.fileSize ?? 0,
+            url: sanitizeUrl(downloadItem.url ?? ''),
+            referrer: sanitizeUrl(downloadItem.referrer ?? ''),
           }),
         }),
         new Promise<never>((_, reject) =>

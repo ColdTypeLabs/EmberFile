@@ -34,3 +34,7 @@ export const storageConflict = storage.defineItem<{
 export const storageLocalLicenseKey = storage.defineItem<string | null>('local:licenseKey', {
   fallback: null,
 });
+
+export const storageHasConsented = storage.defineItem<boolean>('local:hasConsented', {
+  fallback: false,
+});

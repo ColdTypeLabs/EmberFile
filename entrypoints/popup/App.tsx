@@ -6,6 +6,7 @@ import {
   storageRules,
   storageCustomRules,
   storageConflict,
+  storageHasConsented,
 } from '../../src/lib/storage';
 import { UPGRADE_URL, PRIVACY_URL, CHROME_STORE_URL } from '../../src/lib/constants';
 import { RuleRow } from '../../src/components/RuleRow';
@@ -17,7 +18,7 @@ import type { RulesMap, CustomRulesMap, RowMode, ConflictData, CustomRuleEntry }
 // Types
 // ---------------------------------------------------------------------------
 
-type Screen = 'popup' | 'settings' | 'rules';
+type Screen = 'consent' | 'popup' | 'settings' | 'rules';
 
 // ---------------------------------------------------------------------------
 // Small inline helpers
@@ -60,6 +61,66 @@ function LoadingSkeleton() {
       </div>
       <div className="h-10 w-full rounded bg-surface animate-pulse" />
       <div className="h-4 w-40 rounded bg-surface animate-pulse" />
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Screen 0 — ConsentScreen (shown once before any data leaves the device)
+// ---------------------------------------------------------------------------
+
+function ConsentScreen({ onAccept }: { onAccept: () => void }) {
+  return (
+    <div className="w-[380px] bg-bg flex flex-col">
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-border">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <rect x="3" y="2" width="10" height="13" rx="1.5" stroke="#4A90E2" strokeWidth="1.5" />
+          <path d="M9 8h5M12 5l3 3-3 3" stroke="#4A90E2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <span className="text-base font-bold text-text-primary">Before we start</span>
+      </div>
+
+      <div className="px-5 py-5 flex flex-col gap-4">
+        <p className="text-sm text-text-primary leading-relaxed">
+          To rename your downloads, this extension sends a small amount of data to an AI model.
+          Here's exactly what leaves your device:
+        </p>
+
+        <ul className="flex flex-col gap-2">
+          {[
+            ['✓ Sent', 'The filename (e.g. "invoice_2026_q1.pdf")'],
+            ['✓ Sent', 'The file type and size'],
+            ['✓ Sent', 'Download source — domain and path only (e.g. "adobe.com/billing/download")'],
+            ['✗ Never sent', 'File contents'],
+            ['✗ Never sent', 'URL query parameters (account numbers, tokens, IDs)'],
+            ['✗ Never sent', 'Your browsing history or identity'],
+          ].map(([label, desc]) => (
+            <li key={desc} className="flex gap-2 text-xs">
+              <span className={`font-bold shrink-0 ${label.startsWith('✓') ? 'text-green-400' : 'text-text-muted'}`}>
+                {label}
+              </span>
+              <span className="text-text-secondary">{desc}</span>
+            </li>
+          ))}
+        </ul>
+
+        <p className="text-xs text-text-muted leading-relaxed">
+          Data is processed by Claude AI and never stored or used for training.{' '}
+          <button
+            className="underline text-accent"
+            onClick={() => chrome.tabs.create({ url: 'https://coldtypelabs.github.io/Download-Renamer-Web-Extension-privacy/privacy.html' })}
+          >
+            Full privacy policy
+          </button>
+        </p>
+
+        <button
+          onClick={onAccept}
+          className="w-full py-2.5 rounded-lg bg-accent text-white text-sm font-bold hover:bg-accent/90 transition-colors"
+        >
+          Got it — start renaming
+        </button>
+      </div>
     </div>
   );
 }
@@ -576,6 +637,7 @@ function RulesScreen({
 export default function App() {
   const [screen, setScreen] = useState<Screen>('popup');
   const [loaded, setLoaded] = useState(false);
+  const [hasConsented, setHasConsented] = useState(true); // optimistic — corrected on load
   const [enabled, setEnabled] = useState(true);
   const [count, setCount] = useState(0);
   const [isPremium, setIsPremium] = useState(false);
@@ -597,18 +659,27 @@ export default function App() {
       storageRules.getValue(),
       storageCustomRules.getValue(),
       storageConflict.getValue(),
-    ]).then(([enabledVal, countVal, licenseKey, rulesVal, customRulesVal, conflictVal]) => {
+      storageHasConsented.getValue(),
+    ]).then(([enabledVal, countVal, licenseKey, rulesVal, customRulesVal, conflictVal, consentedVal]) => {
       setEnabled(enabledVal);
       setCount(countVal);
       setIsPremium(!!licenseKey);
       setRules(rulesVal);
       setCustomRules(customRulesVal);
       setPendingConflict(conflictVal);
+      setHasConsented(consentedVal);
+      if (!consentedVal) setScreen('consent');
       setLoaded(true);
     }).catch(() => {
       setLoaded(true);
     });
   }, []);
+
+  async function handleConsent() {
+    await storageHasConsented.setValue(true);
+    setHasConsented(true);
+    setScreen('popup');
+  }
 
   async function handleToggle() {
     const next = !enabled;
@@ -711,14 +782,15 @@ export default function App() {
 
   return (
     <>
-      {pendingConflict !== null && (
+      {screen === 'consent' ? (
+        <ConsentScreen onAccept={handleConsent} />
+      ) : pendingConflict !== null ? (
         <ConflictModal
           conflict={pendingConflict}
           onResolved={() => setPendingConflict(null)}
           onRulesUpdated={(fingerprint, newFormat) => handleSaved(fingerprint, newFormat)}
         />
-      )}
-      {screen === 'settings' ? (
+      ) : screen === 'settings' ? (
         <SettingsScreen
           {...sharedRuleProps}
           enabled={enabled}
