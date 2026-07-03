@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Download Renamer — Privacy Policy</title>
+  <title>Emberfile — Privacy Policy</title>
   <style>
     body {
       font-family: sans-serif;
@@ -44,18 +44,19 @@
 </head>
 <body>
 
-  <h1>Privacy Policy — Download Renamer</h1>
-  <p class="updated">Last updated: 2026-06-28</p>
+  <h1>Privacy Policy — Emberfile</h1>
+  <p class="updated">Last updated: 2026-07-02</p>
 
   <hr>
 
   <h2>What this extension does</h2>
 
   <p>
-    Download Renamer is a Chrome extension that automatically renames your downloaded files
-    using AI-suggested names. When you download a file, the extension sends the
-    <strong>filename</strong> (not the file contents) to a developer-operated relay to generate
-    a suggested rename.
+    Emberfile is a Chrome extension that automatically renames your downloaded files using
+    AI-suggested names. The <strong>first time</strong> it sees a new file pattern, it sends a
+    small set of metadata about that download (never the file itself) to a developer-operated
+    relay to generate a suggested rename. Every repeat of that same pattern is handled entirely
+    on your device — nothing is sent anywhere.
   </p>
 
   <hr>
@@ -73,8 +74,23 @@
     <tbody>
       <tr>
         <td>Filename (e.g., <code>report_v3_final.pdf</code>)</td>
-        <td>Yes — temporarily</td>
+        <td>Yes — on first encounter of a new pattern only</td>
         <td>Generates a suggested rename</td>
+      </tr>
+      <tr>
+        <td>File MIME type and file size</td>
+        <td>Yes — on first encounter of a new pattern only</td>
+        <td>Helps the AI classify the file more accurately</td>
+      </tr>
+      <tr>
+        <td>Download source and referrer — <strong>hostname and path only</strong> (e.g., <code>mail.google.com/mail</code>)</td>
+        <td>Yes — on first encounter of a new pattern only</td>
+        <td>Extra context for a better rename suggestion (e.g., distinguishing a bank statement from a Zoom recording)</td>
+      </tr>
+      <tr>
+        <td>URL query parameters (e.g., <code>?token=...</code>, <code>?account=...</code>)</td>
+        <td><strong>No — stripped on-device before anything is sent</strong></td>
+        <td>Query strings can contain session tokens or account identifiers; they are removed before the request ever leaves your browser</td>
       </tr>
       <tr>
         <td>File contents</td>
@@ -84,43 +100,49 @@
       <tr>
         <td>Browsing history</td>
         <td><strong>No — never</strong></td>
-        <td>Extension does not request tab permissions</td>
+        <td>Only the current download's own URL and referrer are read; no tab or history access</td>
       </tr>
       <tr>
         <td>Personal identifiers (name, email, IP)</td>
         <td><strong>No — never</strong></td>
         <td>No user account required; no identifier transmitted</td>
       </tr>
-      <tr>
-        <td>Download URL or source website</td>
-        <td><strong>No — never</strong></td>
-        <td>Only the filename is used</td>
-      </tr>
     </tbody>
   </table>
 
   <hr>
 
+  <h2>Your consent, and when data is sent</h2>
+
+  <p>
+    No data leaves your device until you explicitly accept the first-use consent screen shown
+    the first time the extension activates. Once accepted, data is sent to the relay only on a
+    <strong>cache miss</strong> — the first time a new file-naming pattern is seen. Every
+    subsequent download that matches an already-learned pattern is renamed locally, with zero
+    network activity.
+  </p>
+
+  <hr>
+
   <h2>How your data flows</h2>
 
-  <p>When you download a file, the following two-hop flow occurs:</p>
+  <p>When a new (never-before-seen) file pattern downloads, the following two-hop flow occurs:</p>
 
   <ol>
     <li>
-      <strong>Extension → Developer relay:</strong> The extension sends the filename to a relay
-      endpoint operated by the developer (Trevor McAllister). This endpoint extracts only an
-      <strong>anonymized pattern</strong> from the filename (example: "invoice + .pdf") — the
-      actual filename is not forwarded.
+      <strong>Extension → Developer relay:</strong> The extension sends the filename, MIME type,
+      file size, and the sanitized (query-string-stripped) hostname+path of the download source
+      and referrer to a relay endpoint operated by the developer (Trevor McAllister).
     </li>
     <li>
-      <strong>Developer relay → Claude Haiku (Anthropic):</strong> The relay sends only the
-      anonymized pattern to Anthropic's Claude Haiku API to generate a suggested rename.
+      <strong>Developer relay → Claude Haiku (Anthropic):</strong> The relay forwards this
+      metadata to Anthropic's Claude Haiku API to generate a suggested rename and category tag.
     </li>
     <li>
       <strong>Result returned:</strong> Claude returns a suggested name and tag. The relay
-      returns this to your extension. The relay logs only: the anonymized pattern, the
-      suggested tag, the rename format, and a timestamp.
-      <strong>Your actual filename is never logged.</strong>
+      returns this to your extension, which stores a local rule so the same pattern never needs
+      another API call. The relay logs only: the suggested tag, the rename format, and a
+      timestamp. <strong>Your actual filename and source URLs are not retained in server logs.</strong>
     </li>
   </ol>
 
