@@ -148,8 +148,7 @@ function PopupScreen({ enabled, count, isPremium, onToggle, setScreen }: PopupSc
           <rect x="3" y="2" width="10" height="13" rx="1.5" stroke="#4A90E2" strokeWidth="1.5" />
           <path d="M9 8h5M12 5l3 3-3 3" stroke="#4A90E2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-        <span className="text-base font-bold text-text-primary">Smart Rename</span>
-        <span className="text-[10px] text-text-muted ml-1">[PLACEHOLDER NAME]</span>
+        <span className="text-base font-bold text-text-primary">Emberfile</span>
       </div>
 
       {/* Upgrade banner */}
