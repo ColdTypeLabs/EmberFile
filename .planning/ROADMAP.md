@@ -14,6 +14,7 @@
 - [x] **Phase 3: Settings UI** - Popup, options page, rule viewer, inline editing, custom rules, conflict resolution (Complete 2026-06-28)
 - [x] **Phase 4: Freemium + Store Submission** - Usage gating, upgrade prompt, store assets (completed 2026-06-30)
 - [ ] **Chrome Web Store Testing Period** - Published to testers 2026-07-03, 14-day minimum required before public submission
+- [ ] **v2: Local LLM + Content-Aware Renaming** - See ROADMAP-EXTENDED.md for full concept
 
 ---
 
