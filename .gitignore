@@ -10,3 +10,7 @@ workers/rename-relay/.dev.vars
 .env
 .env.*
 !.env.example
+
+# Local files — never commit
+Gift Codes.txt
+Files Trevor added/
