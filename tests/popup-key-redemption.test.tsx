@@ -34,7 +34,7 @@ async function openSettingsAndRevealKeyInput() {
 
 describe('SettingsScreen — key redemption flow', () => {
   it('clicking "Have a key?" reveals the input row and the link disappears', async () => {
-    await fakeBrowser.storage.local.set({ enabled: true, monthlyCount: 0, licenseKey: null });
+    await fakeBrowser.storage.local.set({ enabled: true, monthlyCount: 0, licenseKey: null, hasConsented: true });
 
     render(<App />);
     const settingsButton = await screen.findByText('Settings');
@@ -48,7 +48,7 @@ describe('SettingsScreen — key redemption flow', () => {
   });
 
   it('Activate button is disabled when input is empty or whitespace-only', async () => {
-    await fakeBrowser.storage.local.set({ enabled: true, monthlyCount: 0, licenseKey: null });
+    await fakeBrowser.storage.local.set({ enabled: true, monthlyCount: 0, licenseKey: null, hasConsented: true });
     const input = await openSettingsAndRevealKeyInput();
 
     const activateButton = screen.getByText('Activate') as HTMLButtonElement;
@@ -62,7 +62,7 @@ describe('SettingsScreen — key redemption flow', () => {
   });
 
   it('successful activation writes the key, flips isPremium, and collapses the input', async () => {
-    await fakeBrowser.storage.local.set({ enabled: true, monthlyCount: 0, licenseKey: null });
+    await fakeBrowser.storage.local.set({ enabled: true, monthlyCount: 0, licenseKey: null, hasConsented: true });
     const mockFetch = vi.fn().mockResolvedValue({
       json: () => Promise.resolve({ valid: true }),
     });
@@ -85,7 +85,7 @@ describe('SettingsScreen — key redemption flow', () => {
   });
 
   it('invalid key response shows the invalid-key error and keeps the input visible', async () => {
-    await fakeBrowser.storage.local.set({ enabled: true, monthlyCount: 0, licenseKey: null });
+    await fakeBrowser.storage.local.set({ enabled: true, monthlyCount: 0, licenseKey: null, hasConsented: true });
     const mockFetch = vi.fn().mockResolvedValue({
       json: () => Promise.resolve({ valid: false }),
     });
@@ -101,7 +101,7 @@ describe('SettingsScreen — key redemption flow', () => {
   });
 
   it('network failure (fetch rejects with TypeError) shows the network-error copy', async () => {
-    await fakeBrowser.storage.local.set({ enabled: true, monthlyCount: 0, licenseKey: null });
+    await fakeBrowser.storage.local.set({ enabled: true, monthlyCount: 0, licenseKey: null, hasConsented: true });
     const mockFetch = vi.fn().mockRejectedValue(new TypeError('Failed to fetch'));
     vi.stubGlobal('fetch', mockFetch);
 
@@ -116,7 +116,7 @@ describe('SettingsScreen — key redemption flow', () => {
   });
 
   it('a hung fetch past 5 seconds times out with the network-error copy and resets keyActivating', async () => {
-    await fakeBrowser.storage.local.set({ enabled: true, monthlyCount: 0, licenseKey: null });
+    await fakeBrowser.storage.local.set({ enabled: true, monthlyCount: 0, licenseKey: null, hasConsented: true });
     const mockFetch = vi.fn().mockReturnValue(new Promise(() => {})); // never resolves
     vi.stubGlobal('fetch', mockFetch);
 

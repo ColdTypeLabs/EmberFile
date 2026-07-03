@@ -13,7 +13,7 @@ Build and load the extension:
 2. Open `chrome://extensions` in Chrome
 3. Enable **Developer mode** (toggle in top-right)
 4. Click **Load unpacked** and select the `dist/` folder
-5. Confirm "Download Renamer" appears in the extension list
+5. Confirm "Emberfile" appears in the extension list
 
 ---
 
@@ -21,12 +21,12 @@ Build and load the extension:
 
 Shows the popup with a mid-range rename count and the FREE badge.
 
-1. Open the Service Worker console: `chrome://extensions` → Download Renamer → **Inspect views: service worker**
+1. Open the Service Worker console: `chrome://extensions` → Emberfile → **Inspect views: service worker**
 2. In the console, run:
    ```js
    chrome.storage.local.set({ 'local:monthlyCount': 2 })
    ```
-3. Click the Download Renamer icon in the Chrome toolbar to open the popup
+3. Click the Emberfile icon in the Chrome toolbar to open the popup
 4. Confirm the popup shows "2 files renamed this month", the **Pause** button, and the **FREE** badge
 5. Capture the popup area. Options:
    - Right-click the popup area → **Inspect** → use the device toolbar to set a fixed width
@@ -54,7 +54,7 @@ Shows the rule management table with at least one rule row.
    })
    ```
 3. Open the options page via one of:
-   - `chrome://extensions` → Download Renamer → **Details** → **Extension options**
+   - `chrome://extensions` → Emberfile → **Details** → **Extension options**
    - Or click **Manage rules →** in the popup (if the link is present)
 4. Confirm the rule row is visible with the pencil (edit) and trash (delete) icons
 5. Capture the full options page at 1280×800 px

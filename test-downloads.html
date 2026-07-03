@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Emberfile — Test Harness</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; background: #0f0f0f; color: #e5e5e5; }
+    h1 { font-size: 1.2rem; margin-bottom: 4px; }
+    p { color: #888; font-size: 0.85rem; margin-top: 0; }
+    .queue { border: 1px solid #2a2a2a; border-radius: 8px; overflow: hidden; margin: 20px 0; }
+    .item { display: flex; align-items: center; gap:12px; padding: 10px 14px; border-bottom: 1px solid #1e1e1e; }
+    .item:last-child { border-bottom: none; }
+    .badge { font-size: 0.7rem; font-weight: 600; padding: 2px 7px; border-radius: 4px; min-width: 42px; text-align: center; background: #1e1e1e; color: #666; }
+    .badge.done { background: #1a3a1a; color: #4caf50; }
+    .badge.active { background: #1a2a3a; color: #64b5f6; }
+    .filename { font-family: monospace; font-size: 0.8rem; color: #bbb; flex: 1; }
+    .desc { font-size: 0.75rem; color: #555; }
+    .controls { display: flex; gap: 10px; margin-bottom: 20px; }
+    button { padding: 8px 18px; border-radius: 6px; border: none; cursor: pointer; font-size: 0.85rem; font-weight: 600; }
+    #btnAll { background: #2563eb; color: white; }
+    #btnNext { background: #374151; color: #e5e5e5; }
+    #btnReset { background: #1e1e1e; color: #888; }
+    #status { font-size: 0.8rem; color: #666; margin-top: 12px; min-height: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Emberfile — Test Harness</h1>
+  <p>Fires real browser downloads with ugly, auto-generated filenames. The extension should intercept and rename each one.</p>
+
+  <div class="controls">
+    <button id="btnAll">Fire All (1s apart)</button>
+    <button id="btnNext">Next →</button>
+    <button id="btnReset">Reset</button>
+  </div>
+
+  <div class="queue" id="queue"></div>
+  <div id="status">Ready — 9 files queued.</div>
+
+  <script>
+    const files = [
+      {
+        name: 'report_20260630_143022_v2_FINAL.pdf',
+        desc: 'Bank statement PDF — ugly timestamp name',
+        mime: 'application/pdf',
+        content: '%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj\n3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 612 792]>>endobj\nxref\n0 4\n0000000000 65535 f\n0000000009 00000 n\n0000000058 00000 n\n0000000115 00000 n\ntrailer<</Size 4/Root 1 0 R>>\nstartxref\n190\n%%EOF',
+      },
+      {
+        name: 'export (3).csv',
+        desc: 'Sales data CSV — Chrome dupe-number suffix',
+        mime: 'text/csv',
+        content: 'Date,Amount,Category\n2026-06-01,120.00,Software\n2026-06-02,450.00,Hardware\n2026-06-03,89.99,Subscriptions\n',
+      },
+      {
+        name: 'IMG_20260528_134521.jpg',
+        desc: 'Phone camera photo — Android filename',
+        mime: 'image/jpeg',
+        content: '\xFF\xD8\xFF\xE0\x00\x10JFIF\x00\x01\x01\x00\x00\x01\x00\x01\x00\x00\xFF\xD9',
+      },
+      {
+        name: 'document.docx',
+        desc: 'Word doc — completely generic name',
+        mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        content: 'PK\x03\x04fake-docx-content-for-testing',
+      },
+      {
+        name: 'data_export_june_2026_v3_FINAL_revised.xlsx',
+        desc: 'Spreadsheet — over-versioned nightmare name',
+        mime: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        content: 'PK\x03\x04fake-xlsx-content-for-testing',
+      },
+      {
+        name: 'setup_x86_64_1.2.47_release.exe',
+        desc: 'Installer EXE — version-encoded name',
+        mime: 'application/octet-stream',
+        content: 'MZ\x90\x00fake-exe-header',
+      },
+      {
+        name: 'zoom_recording_2026_06_30T09_15_00.mp4',
+        desc: 'Meeting recording — ISO timestamp in name',
+        mime: 'video/mp4',
+        content: '\x00\x00\x00\x18ftypmp42\x00\x00\x00\x00mp42mp41',
+      },
+      {
+        name: 'untitled.txt',
+        desc: 'Plain text — minimal name, needs context from content',
+        mime: 'text/plain',
+        content: 'Meeting notes from Q2 planning session\nAction items:\n- Review budget proposal\n- Follow up with design team\n',
+      },
+      {
+        name: 'xk7f2p9q.pdf',
+        desc: 'Duck PDF — random filename, rich duck content inside. Will Claude know?',
+        mime: 'application/pdf',
+        content: '%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj\n3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 612 792]/Contents 4 0 R/Resources<</Font<</F1 5 0 R>>>>>>endobj\n4 0 obj<</Length 420>>\nstream\nBT\n/F1 14 Tf\n50 750 Td\n(THE COMPLETE GUIDE TO DUCKS) Tj\n0 -30 Td\n/F1 11 Tf\n(Ducks are waterfowl belonging to the family Anatidae.) Tj\n0 -20 Td\n(Mallards are the most recognizable duck species worldwide.) Tj\n0 -20 Td\n(A male duck is called a drake; a female is called a hen.) Tj\n0 -20 Td\n(Ducks have waterproof feathers thanks to preen oil.) Tj\n0 -20 Td\n(The fastest duck can fly at 60 mph. Quack!) Tj\nET\nendstream\nendobj\n5 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj\nxref\n0 6\ntrailer<</Size 6/Root 1 0 R>>\nstartxref\n9\n%%EOF',
+      },
+    ];
+
+    let current = 0;
+
+    function render() {
+      const queue = document.getElementById('queue');
+      queue.innerHTML = files.map((f, i) => `
+        <div class="item" id="item-${i}">
+          <span class="badge" id="badge-${i}">${i < current ? '✓' : i + 1}</span>
+          <div style="flex:1">
+            <div class="filename">${f.name}</div>
+            <div class="desc">${f.desc}</div>
+          </div>
+        </div>
+      `).join('');
+      // Re-apply state classes
+      for (let i = 0; i < current; i++) {
+        document.getElementById(`badge-${i}`).className = 'badge done';
+      }
+    }
+
+    function triggerDownload(index) {
+      const f = files[index];
+      const blob = new Blob([f.content], { type: f.mime });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = f.name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+
+      document.getElementById(`badge-${index}`).className = 'badge active';
+      document.getElementById(`badge-${index}`).textContent = '↓';
+
+      setTimeout(() => {
+        document.getElementById(`badge-${index}`).className = 'badge done';
+        document.getElementById(`badge-${index}`).textContent = '✓';
+        current = Math.max(current, index + 1);
+        document.getElementById('status').textContent =
+          current < files.length
+            ? `Fired ${current} / ${files.length} — click Next or Fire All to continue.`
+            : `All ${files.length} downloads fired. Check your Downloads folder!`;
+      }, 1200);
+    }
+
+    document.getElementById('btnNext').onclick = () => {
+      if (current >= files.length) return;
+      const idx = current;
+      current++;
+      triggerDownload(idx);
+    };
+
+    document.getElementById('btnAll').onclick = async () => {
+      for (let i = current; i < files.length; i++) {
+        triggerDownload(i);
+        await new Promise(r => setTimeout(r, 1000));
+      }
+    };
+
+    document.getElementById('btnReset').onclick = () => {
+      current = 0;
+      render();
+      document.getElementById('status').textContent = 'Reset — 9 files queued.';
+    };
+
+    render();
+  </script>
+</body>
+</html>

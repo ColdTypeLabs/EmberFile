@@ -134,8 +134,8 @@ export async function handleDeterminingFilename(
       suggested = true;
       chrome.notifications.create('limitReached', {
         type: 'basic',
-        iconUrl: chrome.runtime.getURL('icon/128.png'),
-        title: 'Download Renamer — Limit reached',
+        iconUrl: chrome.runtime.getURL('icon-128.png'),
+        title: 'Emberfile — Limit reached',
         message: "You’ve used your 5 free renames this month. Upgrade for unlimited.",
         buttons: [{ title: 'Upgrade to Premium' }],
       });
@@ -226,9 +226,8 @@ export async function handleDeterminingFilename(
   }
 }
 
-export default defineBackground(async () => {
-  await checkMissedReset();
-  await setupAlarms();
+export default defineBackground(() => {
+  checkMissedReset().then(() => setupAlarms()).catch(() => {});
 
   chrome.downloads.onDeterminingFilename.addListener((downloadItem, suggest) => {
     handleDeterminingFilename(downloadItem, suggest);

@@ -2,9 +2,9 @@
 
 ## Extension Name
 
-Download Renamer — AI File Naming
+Emberfile — AI File Naming
 
-*(34 characters — within the 45-character limit. TM may edit.)*
+*(27 characters — within the 45-character limit. TM may edit.)*
 
 ---
 
@@ -18,11 +18,11 @@ Auto-renames downloads using AI. First download uses Claude; every repeat uses a
 
 ## Long Description
 
-Download Renamer silently takes over the tedious job of naming your files. The moment a download begins, the extension intercepts it — before anything is written to disk — and suggests a clean, consistent name. No renaming after the fact, no manual cleanup.
+Emberfile silently takes over the tedious job of naming your files. The moment a download begins, the extension intercepts it — before anything is written to disk — and suggests a clean, consistent name. No renaming after the fact, no manual cleanup.
 
 The first time a file pattern is seen (say, a bank statement PDF), the extension sends the filename to Claude Haiku to generate a smart rename and categorization tag. Every subsequent download with the same pattern uses a saved local rule — no API call, instant result. Over time your library of rules grows and the AI is called less and less.
 
-Download Renamer is free for up to 5 file renames per month. For unlimited renames, upgrade to Premium ($2.99/month). You can view your usage count, pause the extension, manage learned rules, and activate a license key from the built-in popup and options page.
+Emberfile is free for up to 5 file renames per month. For unlimited renames, upgrade to Premium ($2.99/month). You can view your usage count, pause the extension, manage learned rules, and activate a license key from the built-in popup and options page.
 
 Your privacy is built into the design. Only the filename is ever transmitted — never the file contents, your browsing history, or any personal identifier. The developer-operated relay extracts only an anonymized pattern (e.g., "invoice + .pdf") before passing anything to Claude. Your actual filename is never logged server-side.
 

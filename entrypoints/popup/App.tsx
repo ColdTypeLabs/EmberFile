@@ -430,7 +430,7 @@ function SettingsScreen({
       {/* CUSTOM RULES */}
       <SectionHeader>Custom Rules</SectionHeader>
       {Object.keys(customRules).length > 0 && (
-        <ul className="flex flex-col divide-y divide-border mx-3">
+        <ul className="flex flex-col divide-y divide-border mx-3 mb-2">
           {Object.entries(customRules).map(([key, rule]) => (
             <CustomRuleRow
               key={key}
@@ -443,7 +443,7 @@ function SettingsScreen({
           ))}
         </ul>
       )}
-      <div className="mx-3 mt-2 rounded-lg border border-border bg-surface overflow-hidden">
+      <div className="mx-3 mb-2 rounded-lg border border-border bg-surface overflow-hidden">
         <button
           onClick={() => setShowAddRule((v) => !v)}
           className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold text-text-primary"
@@ -564,6 +564,7 @@ interface RulesScreenProps {
   onDeleted: (fp: string) => void;
   onCustomSetMode: (key: string, mode: RowMode) => void;
   onCustomDeleted: (key: string) => void;
+  onCustomAdded: (matchText: string, rule: CustomRuleEntry) => void;
 }
 
 function RulesScreen({
@@ -577,9 +578,50 @@ function RulesScreen({
   onDeleted,
   onCustomSetMode,
   onCustomDeleted,
+  onCustomAdded,
 }: RulesScreenProps) {
+  const [showAddRule, setShowAddRule] = useState(false);
+  const [addMatchText, setAddMatchText] = useState('');
+  const [addRenameFormat, setAddRenameFormat] = useState('');
+  const [addSubmitting, setAddSubmitting] = useState(false);
+  const [addValidationError, setAddValidationError] = useState<string | null>(null);
+  const [addSaveError, setAddSaveError] = useState(false);
+
   const learnedCount = Object.keys(rules).length;
   const customCount = Object.keys(customRules).length;
+
+  async function handleAddRule() {
+    const trimmedMatch = addMatchText.trim();
+    const trimmedFormat = addRenameFormat.trim();
+    if (!trimmedMatch || !trimmedFormat) {
+      setAddValidationError('Both fields are required.');
+      return;
+    }
+    if (trimmedMatch.length > 200 || trimmedFormat.length > 200) {
+      setAddValidationError('Fields must be 200 characters or fewer.');
+      return;
+    }
+    if (['__proto__', 'constructor', 'prototype'].includes(trimmedMatch)) {
+      setAddValidationError('Invalid match text.');
+      return;
+    }
+    setAddValidationError(null);
+    setAddSaveError(false);
+    setAddSubmitting(true);
+    try {
+      const current = await storageCustomRules.getValue();
+      current[trimmedMatch] = { matchText: trimmedMatch, renameFormat: trimmedFormat };
+      await storageCustomRules.setValue(current);
+      onCustomAdded(trimmedMatch, { matchText: trimmedMatch, renameFormat: trimmedFormat });
+      setAddMatchText('');
+      setAddRenameFormat('');
+      setShowAddRule(false);
+    } catch {
+      setAddSaveError(true);
+    } finally {
+      setAddSubmitting(false);
+    }
+  }
 
   return (
     <div className="w-[380px] bg-bg flex flex-col max-h-[600px] overflow-y-auto">
@@ -607,12 +649,8 @@ function RulesScreen({
       )}
 
       <SectionHeader>Custom Rules</SectionHeader>
-      {customCount === 0 ? (
-        <p className="text-sm text-text-muted text-center py-4 px-3 mb-2">
-          No custom rules yet.
-        </p>
-      ) : (
-        <ul className="flex flex-col divide-y divide-border mx-3 mb-4">
+      {customCount > 0 && (
+        <ul className="flex flex-col divide-y divide-border mx-3 mb-2">
           {Object.entries(customRules).map(([key, rule]) => (
             <CustomRuleRow
               key={key}
@@ -625,6 +663,53 @@ function RulesScreen({
           ))}
         </ul>
       )}
+      <div className="mx-3 mb-4 rounded-lg border border-border bg-surface overflow-hidden">
+        <button
+          onClick={() => setShowAddRule((v) => !v)}
+          className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-semibold text-text-primary"
+        >
+          <span>Create Custom Rule</span>
+          <span className="text-text-muted">{showAddRule ? '▲' : '▼'}</span>
+        </button>
+        {showAddRule && (
+          <div className="border-t border-border px-3 pb-3 pt-2 flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-text-secondary">Filename pattern contains:</label>
+              <input
+                type="text"
+                value={addMatchText}
+                onChange={(e) => setAddMatchText(e.target.value)}
+                placeholder="e.g. invoice"
+                className="border border-input-border rounded px-2 py-1 text-sm w-full bg-input-bg text-input-text focus:outline-none focus:ring-2 focus:ring-accent"
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-text-secondary">Rename to:</label>
+              <input
+                type="text"
+                value={addRenameFormat}
+                onChange={(e) => setAddRenameFormat(e.target.value)}
+                placeholder="e.g. Invoice_{date}"
+                className="border border-input-border rounded px-2 py-1 text-sm w-full bg-input-bg text-input-text font-mono focus:outline-none focus:ring-2 focus:ring-accent"
+              />
+            </div>
+            <p className="text-xs text-text-muted">Slots: {'{tag}'} {'{date}'} {'{index}'}</p>
+            {addValidationError && (
+              <p className="text-xs text-red-400">{addValidationError}</p>
+            )}
+            {addSaveError && (
+              <p className="text-xs text-red-400">Could not save rule. Please try again.</p>
+            )}
+            <button
+              disabled={addSubmitting}
+              onClick={handleAddRule}
+              className="bg-accent text-white text-sm font-bold px-4 py-2 rounded-lg hover:bg-accent-hover disabled:opacity-50 self-start"
+            >
+              Add Rule
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -812,6 +897,7 @@ export default function App() {
         <RulesScreen
           {...sharedRuleProps}
           setScreen={setScreen}
+          onCustomAdded={handleCustomAdded}
         />
       ) : (
         <PopupScreen

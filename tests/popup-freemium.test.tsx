@@ -29,6 +29,7 @@ describe('PopupScreen — freemium UI', () => {
       enabled: true,
       monthlyCount: 5,
       licenseKey: null,
+      hasConsented: true,
     });
 
     render(<App />);
@@ -44,6 +45,7 @@ describe('PopupScreen — freemium UI', () => {
       enabled: true,
       monthlyCount: 5,
       licenseKey: 'PREMIUM-KEY-123',
+      hasConsented: true,
     });
 
     render(<App />);
@@ -58,6 +60,7 @@ describe('PopupScreen — freemium UI', () => {
       enabled: true,
       monthlyCount: 2,
       licenseKey: null,
+      hasConsented: true,
     });
 
     render(<App />);
@@ -71,6 +74,7 @@ describe('PopupScreen — freemium UI', () => {
       enabled: true,
       monthlyCount: 5,
       licenseKey: null,
+      hasConsented: true,
     });
 
     render(<App />);

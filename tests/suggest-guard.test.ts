@@ -15,7 +15,7 @@ const makeDownloadItem = (filename: string): chrome.downloads.DownloadItem =>
 
 describe('onDeterminingFilename suggest() guard', () => {
   it('calls suggest with no args when enabled=false', async () => {
-    await fakeBrowser.storage.local.set({ enabled: false });
+    await fakeBrowser.storage.local.set({ enabled: false, hasConsented: true });
     const suggest = vi.fn();
 
     await handleDeterminingFilename(makeDownloadItem('report.pdf'), suggest);
@@ -26,6 +26,7 @@ describe('onDeterminingFilename suggest() guard', () => {
   });
 
   it('calls suggest exactly once when storage read throws', async () => {
+    await fakeBrowser.storage.local.set({ hasConsented: true });
     vi.spyOn(fakeBrowser.storage.local, 'get').mockRejectedValueOnce(
       new Error('storage failure')
     );
@@ -38,7 +39,7 @@ describe('onDeterminingFilename suggest() guard', () => {
   });
 
   it('never calls suggest more than once (double-call guard)', async () => {
-    await fakeBrowser.storage.local.set({ enabled: false });
+    await fakeBrowser.storage.local.set({ enabled: false, hasConsented: true });
     const suggest = vi.fn();
 
     await handleDeterminingFilename(makeDownloadItem('test.zip'), suggest);

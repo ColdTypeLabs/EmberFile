@@ -1,10 +1,10 @@
-# Privacy Policy — Download Renamer
+# Privacy Policy — Emberfile
 
 **Effective date:** 2026-06-28
 
 ## What this extension does
 
-Download Renamer is a Chrome extension that automatically renames your downloaded files
+Emberfile is a Chrome extension that automatically renames your downloaded files
 using AI-suggested names. When you download a file, the extension sends the **filename**
 (not the file contents) to a developer-operated relay to generate a suggested rename.
 

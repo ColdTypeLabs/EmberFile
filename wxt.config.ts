@@ -7,7 +7,7 @@ export default defineConfig({
     plugins: [tailwindcss()],
   }),
   manifest: {
-    name: 'Download Renamer',
+    name: 'Emberfile',
     description: 'Auto-renames downloads using AI. First encounter uses Claude; every repeat uses a local rule.',
     permissions: ['downloads', 'storage', 'alarms', 'notifications'],
     host_permissions: [

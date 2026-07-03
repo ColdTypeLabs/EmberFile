@@ -25,6 +25,7 @@ describe('handleDeterminingFilename — rename engine', () => {
     // @wxt-dev/storage strips the 'local:' prefix when writing to chrome.storage.local
     await fakeBrowser.storage.local.set({
       enabled: true,
+      hasConsented: true,
       rules: { 'invoice.pdf': { tag: 'invoice', renameFormat: '{tag}-{date}-{index}', matchCount: 2 } },
     });
     const mockFetch = vi.fn();
@@ -40,7 +41,7 @@ describe('handleDeterminingFilename — rename engine', () => {
   });
 
   it('cache miss: calls Worker relay and renames with suggestedName + ext', async () => {
-    await fakeBrowser.storage.local.set({ enabled: true });
+    await fakeBrowser.storage.local.set({ enabled: true, hasConsented: true });
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,
       json: () =>
@@ -61,7 +62,7 @@ describe('handleDeterminingFilename — rename engine', () => {
   });
 
   it('cache miss: stores rule with matchCount: 1 after first Worker call', async () => {
-    await fakeBrowser.storage.local.set({ enabled: true });
+    await fakeBrowser.storage.local.set({ enabled: true, hasConsented: true });
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,
       json: () =>
@@ -84,7 +85,7 @@ describe('handleDeterminingFilename — rename engine', () => {
   });
 
   it('Worker fetch throws: suggest() called with no args (download uses original filename)', async () => {
-    await fakeBrowser.storage.local.set({ enabled: true });
+    await fakeBrowser.storage.local.set({ enabled: true, hasConsented: true });
     const mockFetch = vi.fn().mockRejectedValue(new Error('network error'));
     vi.stubGlobal('fetch', mockFetch);
     const suggest = vi.fn();
@@ -97,7 +98,7 @@ describe('handleDeterminingFilename — rename engine', () => {
 
   it('Worker fetch times out: suggest() called with no args after timeout', async () => {
     vi.useFakeTimers({ shouldAdvanceTime: false });
-    await fakeBrowser.storage.local.set({ enabled: true });
+    await fakeBrowser.storage.local.set({ enabled: true, hasConsented: true });
     const mockFetch = vi.fn().mockReturnValue(new Promise(() => {})); // never resolves
     vi.stubGlobal('fetch', mockFetch);
     const suggest = vi.fn();
@@ -112,7 +113,7 @@ describe('handleDeterminingFilename — rename engine', () => {
   }, 15000);
 
   it('disabled: suggest() called with no args immediately', async () => {
-    await fakeBrowser.storage.local.set({ enabled: false });
+    await fakeBrowser.storage.local.set({ enabled: false, hasConsented: true });
     const mockFetch = vi.fn();
     vi.stubGlobal('fetch', mockFetch);
     const suggest = vi.fn();
@@ -125,7 +126,7 @@ describe('handleDeterminingFilename — rename engine', () => {
   });
 
   it('suggest() always called exactly once on error path (double-call guard)', async () => {
-    await fakeBrowser.storage.local.set({ enabled: true });
+    await fakeBrowser.storage.local.set({ enabled: true, hasConsented: true });
     const mockFetch = vi.fn().mockRejectedValue(new Error('some error'));
     vi.stubGlobal('fetch', mockFetch);
     const suggest = vi.fn();

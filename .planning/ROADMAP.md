@@ -143,3 +143,4 @@ Plans:
 *Phase 3 plans finalized: 2026-06-28 — 5 plans, 4 waves*
 *Phase 4 plans finalized: 2026-06-29 — 5 plans, 2 waves (04-01/02/05 parallel Wave 1; 04-03/04 parallel Wave 2)*
 *Phase 4 plans reconciled (reviews mode): 2026-06-29 — 6 plans, 2 waves (04-01/02/05 parallel Wave 1; 04-03/04/06 parallel Wave 2). 04-03/04-04 rewritten to match shipped popup-consolidated UI; 04-06 added for notification ID guard fix.*
+*2026-07-01 post-Phase-4 additions (unplanned, shipped ad-hoc): CR-03 counter serialization fix, CR-04 .env untracked, URL/referrer context in Worker payload with sanitizeUrl() PII scrubbing, Worker system prompt full rewrite, first-use consent screen (storageHasConsented + ConsentScreen in popup). Product name locked: **Emberfile**. Remaining blockers: icon/promo tile, privacy.html update, KV deploy (04-02), GitHub Pages (04-05), placeholder URL replacement.*

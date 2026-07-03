@@ -16,8 +16,8 @@ progress:
 
 # Project State: Download Renamer Web Extension
 
-**Last updated:** 2026-06-30
-**Status:** Executing Phase 04
+**Last updated:** 2026-07-02
+**Status:** Post-launch — awaiting Chrome Web Store review
 
 ---
 
@@ -79,7 +79,7 @@ Progress: [██████████] 100%
 | ConflictModal has no dismiss | User must pick one side — per D-23 in CONTEXT.md |
 | `isPremium` hardcoded false in Phase 3 | Phase 4 adds real freemium gate; Phase 3 UI is structural only |
 | /validate-key route uses url.pathname dispatch | Existing POST / rename route unchanged; validate-key checked first then falls through |
-| LICENSE_KEYS KV placeholder ID in wrangler.toml | Trevor must run kv namespace create and update ID before deploying |
+| LICENSE_KEYS KV namespace ID set | `id = "18eafabc6c264ab49ee781fd67565bef"` in workers/rename-relay/wrangler.toml |
 | Privacy policy hosted via GitHub Pages /docs folder | No separate hosting infrastructure required |
 | Store listing name 34 chars, short desc 105 chars | Well within Chrome Web Store limits (45/132 chars) |
 | Upgrade URL and privacy URL left as explicit PLACEHOLDERs | Must be replaced before submission — marked clearly in STORE-LISTING.md |
@@ -87,6 +87,13 @@ Progress: [██████████] 100%
 | Popup freemium UI (entrypoints/popup/App.tsx) confirmed to already match 04-UI-SPEC.md D-08/D-09/D-10 | 04-03 was a reconciliation plan, not new implementation — prior ad-hoc redesign already shipped isPremium wiring, upgrade banner, and FREE/PREMIUM badge; no code changes needed |
 | jsdom + @testing-library/react + @testing-library/jest-dom added as devDependencies | 04-03 plan assumed these existed (referencing tests/background.test.ts) but they were absent from package.json/node_modules; verified legitimacy via npm registry before installing |
 | handleActivateKey's fetch wrapped in 5-second Promise.race timeout | Closes T-04-16 (DoS gap) — matches the existing background.ts Worker-call pattern; timeout rejects with TypeError so it routes to the network-error copy branch, not the invalid-key branch |
+| **Product name: Emberfile** | Decided 2026-07-01. Compact, brandable, no existing trademark conflict, Chrome Store findable via summary keywords. No vowel-drop or pun — clean compound. Icon concept: ember/flame on a document. |
+| URL/referrer context sent to Worker | Download source domain+path added to API payload for dramatically better rename quality. Query params stripped via `sanitizeUrl()` to prevent PII leakage (account numbers, session tokens). Only hostname+pathname sent. |
+| First-use consent gate before any API call | `storageHasConsented` checked in `handleDeterminingFilename` before freemium gate. If false: suggest(originalName), open popup. ConsentScreen lists exactly what IS and IS NOT sent. User must accept before any data leaves device. Legal defense: explicit disclosure + technical enforcement (sanitizeUrl) + no Worker logging. |
+| Worker system prompt rewritten (2026-07-01) | Original prompt had zero rename quality instructions. New prompt: filing-cabinet framing, 2–4 Title Case words, strip all timestamps/versions/noise, use URL+referrer as strong context clues. Validated live — dramatically better output (e.g. Zoom GMT recording → "Quarterly Product Roadmap Review" from referrer slug). |
+| CR-03 fix: counter increment serialized | Cache-miss path now calls `incrementMonthlyCount()` (promise-chain mutex) instead of bare getValue/setValue. Prevents concurrent downloads both reading count=N and both writing N+1. Module-level `_counterLock` is intentional — control primitive, not persisted state. |
+| CR-04: .env untracked from git | `git rm --cached .env` run. File remains on disk with `VITE_WORKER_URL`. `.gitignore` updated. API key never committed. |
+| `onDeterminingFilename` does NOT fire for blob: URLs | Discovered during testing. Chrome-generated blob: downloads (URL.createObjectURL) bypass the hook entirely. No fix — by design. Only real HTTP downloads trigger the extension. |
 
 ### Architecture Constraints (must not violate)
 
@@ -131,37 +138,36 @@ Progress: [██████████] 100%
 
 ## Session Continuity
 
-## Next Actions
+## Current Status (2026-07-02)
 
-**Immediate (what's actually blocking ship):**
+### Done ✓
+- Extension submitted to Chrome Web Store as **Private** with Google Group "Emberfile Elite Squadron Delta Force 9"
+- Privacy policy live at `https://coldtypelabs.github.io/EmberFile/privacy.html`
+- `PRIVACY_URL` and `UPGRADE_URL` set in `src/lib/constants.ts`
+- Stripe payment link: `https://buy.stripe.com/4gM28r87gaH37yBgsq0Ny00`
+- Cloudflare KV deployed with 10 gift keys + `EMBER-K9X4M2-TREVOR` (Trevor's personal key)
+- Store listing filled out — screenshots, promo tile, description, category (Tools)
+- ColdTypeLabs/EmberFile GitHub repo public
+- Sideload zip at `Assets/emberfile-sideload.zip` for beta testers
+- Bug fixes shipped (2026-07-02):
+  - `defineBackground` async→sync (WXT MV3 requirement)
+  - Notification icon path: `icon/128.png` → `icon-128.png`
+  - "Create Custom Rule" button added to RulesScreen (was only in SettingsScreen)
+- Submission zip updated: `Assets/emberfile-v1.0.1.zip`
 
-1. Trevor completes the two manual checkpoints below (KV deploy, GitHub Pages)
-2. Wire real freemium enforcement in `entrypoints/background.ts` — right now the popup UI shows the upgrade banner at `count >= 5` but nothing in the background worker actually blocks the 6th rename
-3. Replace `UPGRADE_URL` / `CHROME_STORE_URL` in `src/lib/constants.ts` with real URLs (payment platform + Web Store listing link, once published)
-4. Store assets (icon, promo tile, listing copy) before submission
+### Waiting On
+- Chrome Web Store review (1–3 business days) — submitted as Private
+- Stripe business website verification (submitted with privacy URL)
+- After approval: update `CHROME_STORE_URL` in `src/lib/constants.ts`
+- After approval: check "in-app purchases" checkbox in Distribution tab (Stripe is wired)
 
-**Trevor must complete manually (human-action checkpoints):**
-
-04-02 — Cloudflare KV deploy:
-
-1. `wrangler kv namespace create LICENSE_KEYS` (run from workers/rename-relay/)
-2. Copy the KV namespace ID into workers/rename-relay/wrangler.toml
-3. `wrangler kv key put --binding=LICENSE_KEYS "TEST-KEY-001" "active"`
-4. `wrangler deploy`
-5. `curl -X POST https://<your-worker>.workers.dev/validate-key -H "Content-Type: application/json" -d '{"key":"TEST-KEY-001"}'` → expect `{"valid":true}`
-
-Resume signal: type "deployed"
-
-04-05 — GitHub Pages:
-
-1. Repo Settings → Pages → Source: main branch → /docs folder → Save
-2. Wait ~2min for build
-3. Confirm https://ya-boy-mac.github.io/Download-Renamer-Web-Extension/privacy.html is live
-4. Update PRIVACY_URL in src/lib/constants.ts (created during UI redesign)
-
-Resume signal: type "pages-live" and paste confirmed URL
+### Beta Testers
+- Tester access via Google Group (add at `groups.google.com`)
+- Sideload instructions: unzip → `chrome://extensions` → Developer mode → Load unpacked
+- Store URL (works after approval): `https://chromewebstore.google.com/detail/ebohdbgcmeddhjibhomdeamabpihhgmd`
 
 ---
 
 *State initialized: 2026-06-28*
 *Phase 3 complete: 2026-06-28 — 5/5 plans, 4 waves, 32/32 tests, build clean*
+*Phase 4 complete: 2026-07-02 — submitted to Chrome Web Store v1.0.1*
